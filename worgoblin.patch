@@ -1,0 +1,49 @@
+From 7a17f1ced075503e9f5a1a36f344bf6580d9041c Mon Sep 17 00:00:00 2001
+From: Benjamin Jackson <38561765+benjymansy123@users.noreply.github.com>
+Date: Mon, 27 Dec 2021 01:07:45 -0500
+Subject: [PATCH] Update SharedDefines.h
+
+---
+ SharedDefines.h | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
+
+diff --git a/src/server/shared/SharedDefines.h b/src/server/shared/SharedDefines.h
+index 6cb96fc..fb3b4f3 100644
+--- a/src/server/shared/SharedDefines.h
++++ b/src/server/shared/SharedDefines.h
+@@ -75,9 +75,10 @@ enum Races
+     RACE_TAUREN             = 6,  // TITLE Tauren
+     RACE_GNOME              = 7,  // TITLE Gnome
+     RACE_TROLL              = 8,  // TITLE Troll
+-    //RACE_GOBLIN             = 9,
++    RACE_GOBLIN             = 9,  // TITLE Goblin
+     RACE_BLOODELF           = 10, // TITLE Blood Elf
+-    RACE_DRAENEI            = 11 //, TITLE Draenei
++    RACE_DRAENEI            = 11, // TITLE Draenei
++    RACE_WORGEN             = 12 //, TITLE Worgen
+     //RACE_FEL_ORC        = 12,
+     //RACE_NAGA           = 13,
+     //RACE_BROKEN         = 14,
+@@ -91,17 +92,17 @@ enum Races
+ };
+ 
+ // max+1 for player race
+-#define MAX_RACES         12
++#define MAX_RACES         13
+ 
+ #define RACEMASK_ALL_PLAYABLE \
+     ((1<<(RACE_HUMAN-1))   |(1<<(RACE_ORC-1))          |(1<<(RACE_DWARF-1))   | \
+     (1<<(RACE_NIGHTELF-1))|(1<<(RACE_UNDEAD_PLAYER-1))|(1<<(RACE_TAUREN-1))  | \
+-    (1<<(RACE_GNOME-1))   |(1<<(RACE_TROLL-1))        |(1<<(RACE_BLOODELF-1))| \
+-    (1<<(RACE_DRAENEI-1)))
++    (1<<(RACE_GNOME-1))   |(1<<(RACE_TROLL-1))        |(1<<(RACE_GOBLIN-1))| \
++    (1<<(RACE_BLOODELF-1))|(1<<(RACE_DRAENEI-1))      |(1<<(RACE_WORGEN-1)))
+ 
+ #define RACEMASK_ALLIANCE \
+-    ((1<<(RACE_HUMAN-1)) | (1<<(RACE_DWARF-1)) | (1<<(RACE_NIGHTELF-1)) | \
+-    (1<<(RACE_GNOME-1)) | (1<<(RACE_DRAENEI-1)))
++    ((1<<(RACE_HUMAN-1)) | (1<<(RACE_DWARF-1))   | (1<<(RACE_NIGHTELF-1)) | \
++    (1<<(RACE_GNOME-1)) | (1<<(RACE_DRAENEI-1)) | (1<<(RACE_WORGEN-1)))
+ 
+ #define RACEMASK_HORDE RACEMASK_ALL_PLAYABLE & ~RACEMASK_ALLIANCE
+ 
