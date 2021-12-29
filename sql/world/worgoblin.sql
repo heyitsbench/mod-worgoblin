@@ -1304,10 +1304,18 @@ UPDATE item_template SET allowablerace = allowablerace + 2048 WHERE NOT allowabl
 UPDATE `playercreateinfo_skills` SET `racemask` = `racemask` + 256 WHERE `racemask` & 2;
 UPDATE `playercreateinfo_skills` SET `racemask` = `racemask` + 2048 WHERE `racemask` & 1;
 UPDATE `playercreateinfo_skills` SET `racemask` = 4095 WHERE `racemask` = 0;
+INSERT INTO `playercreateinfo_skills` (`raceMask`, `classMask`, `skill`, `rank`, `comment`) VALUES
+(2048, 0, 789, 0, 'Worgen - Racial');
 
 UPDATE `playercreateinfo_spell_custom` SET `racemask` = `racemask` + 256 WHERE `racemask` & 2;
 UPDATE `playercreateinfo_spell_custom` SET `racemask` = `racemask` + 2048 WHERE `racemask` & 1;
 UPDATE `playercreateinfo_spell_custom` SET `racemask` = 4095 WHERE `racemask` = 0;
+INSERT INTO `playercreateinfo_spell_custom` (`racemask`, `classmask`, `Spell`, `Note`) VALUES
+(2048, 0, 68992, 'Darkflight'),
+(2048, 0, 68975, 'Viciousness'),
+(2048, 0, 68976, 'Aberration'),
+(2048, 0, 68978, 'Flayer');
+
 
 UPDATE quest_template SET AllowableRaces = AllowableRaces + 256 WHERE NOT AllowableRaces & 256 AND AllowableRaces & 2 AND AllowableRaces != -1 AND AllowableRaces != 2147483647 AND AllowableRaces != 2047 AND AllowableRaces != 4095 AND AllowableRaces != 8191 AND AllowableRaces != 16383 AND AllowableRaces != 32767 AND AllowableRaces != 65535 AND AllowableRaces != 131071 AND AllowableRaces != 262143 AND AllowableRaces != 524287 AND AllowableRaces != 1048575 AND AllowableRaces != 2097151;
 UPDATE quest_template SET AllowableRaces = AllowableRaces + 2048 WHERE NOT AllowableRaces & 2048 AND AllowableRaces & 1 AND AllowableRaces != -1 AND AllowableRaces != 2147483647 AND AllowableRaces != 2047 AND AllowableRaces != 4095 AND AllowableRaces != 8191 AND AllowableRaces != 16383 AND AllowableRaces != 32767 AND AllowableRaces != 65535 AND AllowableRaces != 131071 AND AllowableRaces != 262143 AND AllowableRaces != 524287 AND AllowableRaces != 1048575 AND AllowableRaces != 2097151;
