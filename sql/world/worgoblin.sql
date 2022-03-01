@@ -1317,8 +1317,6 @@ INSERT INTO `playercreateinfo_spell_custom` (`racemask`, `classmask`, `Spell`, `
 (2048, 0, 68978, 'Flayer');
 
 INSERT INTO `creature_model_info` (`DisplayID`, `BoundingRadius`, `CombatReach`, `Gender`, `DisplayID_Other_Gender`) VALUES
-(6894, 0, 0, 0, 0),
-(6895, 0, 0, 1, 0),
 (33000, 0.406, 1.5, 0, 0),
 (33001, 0.406, 1.5, 1, 0);
 
