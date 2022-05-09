@@ -22,14 +22,20 @@ Or you can do it manually through a text editor of your choice by changing the l
 
 Upon extraction of the zip archive, you'll have a DBC folder and a patch-A.MPQ file. Move all the contents of the DBC folder to your AzerothCore Data directory. Feel free to make a backup of the DBCs you'll be replacing, as backups never hurt.
 
-### 3) Run the [worgoblin.sql](https://github.com/benjymansy123/mod-worgoblin/blob/master/sql/world/worgoblin.sql) on your acore_world table in your DB with any DB management program of your choice. (e.g. HeidiSQL)
+### 3) Run the [worgoblin.sql](https://github.com/benjymansy123/mod-worgoblin/blob/master/sql/world/worgoblin.sql) on your world table in your DB with any DB management program of your choice. (e.g. HeidiSQL)
 
 ### 4) Compile and install AzerothCore.
 
 ### 5) Move the [DBC & MPQ.zip](https://github.com/benjymansy123/mod-worgoblin/blob/master/DBC%20%26%20MPQ.zip) file to your Data folder in your WoW client.
 
-### 6) Remove signature checks from your WoW executable using the patcher.
+### 6) Remove signature checks from your WoW executable using [the patcher](https://github.com/benjymansy123/mod-worgoblin/blob/master/wow_unsig(12340).exe).
 
 Because WoW uses signature checks so as to not allow Interface files to be modified, we need to remove those checks in order to be able to use custom races. This is accomplished using the patcher included in the repo. Move the patcher into your WoW client directory and run it. Again, feel free to make a backup of your original executable.
 
 And with that, you are all done!
+
+## Credits
+
+* mthsena for creating a repository for the [original script](https://github.com/mthsena/trinitycore_scripts/tree/master/scripts/CustomRaces) for TrinityCore.
+* [yuan2105](https://github.com/yuanf225) for racing me to get these working and helping me out on multiple occasions.
+* Various users on various Discords for helping me out on a slew of issues with almost everything. (ragestriker#8037 and Mr.MA#0957 in particular)
