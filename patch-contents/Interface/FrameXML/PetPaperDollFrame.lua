@@ -442,7 +442,7 @@ function PetPaperDollFrame_UpdateCompanionPreview()
 		local creatureID, creatureName = GetCompanionInfo(PetPaperDollFrameCompanionFrame.mode, selected);
 		CompanionModelFrame:SetCreature(creatureID);
 		CompanionSelectedName:SetText(creatureName);
-		if ( creatureName == "Mountain Horse" ) then
+		if ( creatureName == "Mountain Horse" or creatureName == "Swift Mountain Horse" ) then
 			CompanionModelFrame:SetPosition(0,-1,1.6);
 		end	
 	end
