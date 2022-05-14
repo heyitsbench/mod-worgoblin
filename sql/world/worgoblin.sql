@@ -1315,6 +1315,7 @@ INSERT INTO `item_template` (`entry`, `class`, `subclass`, `SoundOverrideSubclas
 UPDATE `playercreateinfo_skills` SET `racemask` = `racemask` + 256 WHERE `racemask` & 2;
 UPDATE `playercreateinfo_skills` SET `racemask` = `racemask` + 2048 WHERE `racemask` & 1;
 UPDATE `playercreateinfo_skills` SET `racemask` = 4095 WHERE `racemask` = 0;
+UPDATE `playercreateinfo_skills` SET `racemask` = `racemask` + 2304 WHERE `skill` = 46; -- Fix guns issue for gobby worgs.
 INSERT INTO `playercreateinfo_skills` (`raceMask`, `classMask`, `skill`, `rank`, `comment`) VALUES
 (2048, 0, 789, 0, 'Worgen - Racial');
 
