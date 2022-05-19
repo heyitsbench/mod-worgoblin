@@ -42,20 +42,12 @@ diff --git a/src/server/game/Handlers/CharacterHandler.cpp b/src/server/game/Han
 index 171ee44af866..83d647d81560 100644
 --- a/src/server/game/Handlers/CharacterHandler.cpp
 +++ b/src/server/game/Handlers/CharacterHandler.cpp
-@@ -2282,6 +2282,7 @@ void WorldSession::HandleCharFactionOrRaceChange(WorldPacket& recvData)
-             case RACE_UNDEAD_PLAYER:
-             case RACE_TROLL:
-             case RACE_BLOODELF:
-+            case RACE_GOBLIN:
-                 team = TEAM_HORDE;
-                 break;
-             default:
-@@ -2307,7 +2308,7 @@ void WorldSession::HandleCharFactionOrRaceChange(WorldPacket& recvData)
-         trans->Append(stmt);
- 
-         // Race specific languages
--        if (race != RACE_ORC && race != RACE_HUMAN)
-+        if (race != RACE_ORC && race != RACE_HUMAN && race != RACE_WORGEN && race != RACE_GOBLIN)
-         {
-             stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_CHAR_SKILL_LANGUAGE);
-             stmt->setUInt32(0, lowGuid);
+@@ -2135,7 +2135,7 @@ void WorldSession::HandleCharFactionOrRaceChange(WorldPacket& recvData)
+        trans->Append(stmt);
+
+        // Race specific languages
+-       if (factionChangeInfo->Race != RACE_ORC && factionChangeInfo->Race != RACE_HUMAN)
++       if (factionChangeInfo->Race != RACE_ORC && factionChangeInfo->Race != RACE_HUMAN && race != RACE_WORGEN && race != RACE_GOBLIN)
+        {
+            stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_CHAR_SKILL_LANGUAGE);
+            stmt->SetData(0, lowGuid);
