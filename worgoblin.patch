@@ -1,12 +1,3 @@
-From 7a17f1ced075503e9f5a1a36f344bf6580d9041c Mon Sep 17 00:00:00 2001
-From: Benjamin Jackson <38561765+benjymansy123@users.noreply.github.com>
-Date: Mon, 27 Dec 2021 01:07:45 -0500
-Subject: [PATCH] Update SharedDefines.h
-
----
- SharedDefines.h | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
-
 diff --git a/src/server/shared/SharedDefines.h b/src/server/shared/SharedDefines.h
 index 6cb96fc..fb3b4f3 100644
 --- a/src/server/shared/SharedDefines.h
@@ -47,3 +38,24 @@ index 6cb96fc..fb3b4f3 100644
  
  #define RACEMASK_HORDE RACEMASK_ALL_PLAYABLE & ~RACEMASK_ALLIANCE
  
+diff --git a/src/server/game/Handlers/CharacterHandler.cpp b/src/server/game/Handlers/CharacterHandler.cpp
+index 171ee44af866..83d647d81560 100644
+--- a/src/server/game/Handlers/CharacterHandler.cpp
++++ b/src/server/game/Handlers/CharacterHandler.cpp
+@@ -2282,6 +2282,7 @@ void WorldSession::HandleCharFactionOrRaceChange(WorldPacket& recvData)
+             case RACE_UNDEAD_PLAYER:
+             case RACE_TROLL:
+             case RACE_BLOODELF:
++            case RACE_GOBLIN:
+                 team = TEAM_HORDE;
+                 break;
+             default:
+@@ -2307,7 +2308,7 @@ void WorldSession::HandleCharFactionOrRaceChange(WorldPacket& recvData)
+         trans->Append(stmt);
+ 
+         // Race specific languages
+-        if (race != RACE_ORC && race != RACE_HUMAN)
++        if (race != RACE_ORC && race != RACE_HUMAN && race != RACE_WORGEN && race != RACE_GOBLIN)
+         {
+             stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_CHAR_SKILL_LANGUAGE);
+             stmt->setUInt32(0, lowGuid);
