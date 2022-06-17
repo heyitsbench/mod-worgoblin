@@ -28,7 +28,7 @@ Upon extraction of the zip archive, you'll have a DBC folder and a patch-A.MPQ f
 
 ### 5) Move the [DBC & MPQ.zip](https://github.com/benjymansy123/mod-worgoblin/blob/master/DBC%20%26%20MPQ.zip) file to your Data folder in your WoW client.
 
-### 6) Remove signature checks from your WoW executable using the patcher for [windows](https://github.com/benjymansy123/mod-worgoblin/blob/master/wow_unsig(12340).exe) or [(mac)](https://mega.nz/file/c8IQXCab#PrUfJSS0OmrFJL1GASXIKY2_tLkdUsI95SJNbelont0).
+### 6) Remove signature checks from your WoW executable using the patcher for [windows](https://github.com/benjymansy123/mod-worgoblin/blob/master/wow_unsig(12340).exe) or [mac](https://mega.nz/file/c8IQXCab#PrUfJSS0OmrFJL1GASXIKY2_tLkdUsI95SJNbelont0).
 
 Because WoW uses signature checks so as to not allow Interface files to be modified, we need to remove those checks in order to be able to use custom races. This is accomplished using the patcher included in the repo. Move the patcher into your WoW client directory and run it. Again, feel free to make a backup of your original executable.
 
