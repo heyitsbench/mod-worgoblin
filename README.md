@@ -20,15 +20,15 @@ This can be accomplished in a couple different ways. You could do it using Git b
 
 Or you can do it manually through a text editor of your choice by changing the lines required where a "-" indicates the original line and a "+" indicates the change necessary. There are a total of seven lines to change and one line to add.
 
-### 2) Replace the DBC files in your AzerothCore Data directory with the ones provided in [DBC & MPQ.zip](https://github.com/benjymansy123/mod-worgoblin/blob/master/DBC%20%26%20MPQ.zip).
+### 2) Replace the DBC files in your AzerothCore Data directory with the ones provided in [DBFilesClient](https://github.com/benjymansy123/mod-worgoblin/tree/master/patch-contents/DBFilesClient).
 
-Upon extraction of the zip archive, you'll have a DBC folder and a patch-A.MPQ file. Move all the contents of the DBC folder to your AzerothCore Data directory. Feel free to make a backup of the DBCs you'll be replacing, as backups never hurt.
+Upon downloading the repo, you'll have the patch-contents file available to you. Copy all the contents of the DBFilesClient folder to your AzerothCore Data directory. Feel free to make a backup of the DBCs you'll be replacing, as backups never hurt.
 
 ### 3) Run the [worgoblin.sql](https://github.com/benjymansy123/mod-worgoblin/blob/master/sql/world/worgoblin.sql) on your world table in your DB with any DB management program of your choice. (e.g. HeidiSQL)
 
 ### 4) Compile and install AzerothCore.
 
-### 5) Move the [DBC & MPQ.zip](https://github.com/benjymansy123/mod-worgoblin/blob/master/DBC%20%26%20MPQ.zip) file to your Data folder in your WoW client.
+### 5) Move the [patch-contents](https://github.com/benjymansy123/mod-worgoblin/tree/master/patch-contents) folder to your Data folder in your WoW client and rename the folder to `patch-A.MPQ`.
 
 ### 6) Remove signature checks from your WoW executable using the patcher for [Windows](https://github.com/benjymansy123/mod-worgoblin/blob/master/wow_unsig(12340).exe). A Mac .app file will be provided in the future.
 
