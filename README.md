@@ -18,7 +18,7 @@ This can be accomplished in a couple different ways. You could do it using Git b
 
 `git apply --ignore-space-change --ignore-whitespace modules/mod-worgoblin/worgoblin.patch`
 
-Or you can do it manually through a text editor of your choice by changing the lines required where a "-" indicates the original line and a "+" indicates the change necessary. There are a total of seven lines to change and one line to add.
+Or you can do it manually through a text editor of your choice by changing the lines required where a "-" indicates the original line and a "+" indicates the change necessary. Where to find the specific lines can be found after the @@ before each change, where it states the line number. There are a total of seven lines to change and one line to add.
 
 ### 2) Replace the DBC files in your AzerothCore Data directory with the ones provided in [DBFilesClient](https://github.com/benjymansy123/mod-worgoblin/tree/master/patch-contents/DBFilesClient).
 
