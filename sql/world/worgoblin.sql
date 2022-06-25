@@ -1319,55 +1319,103 @@ INSERT INTO `playercreateinfo_action` (`race`, `class`, `button`, `action`) VALU
 (9, 1, 73, 78),
 (9, 1, 84, 6603),
 (9, 1, 96, 6603),
+-- (9, 1, 120, 69041), Rocket Barrage Warrior
+-- (9, 1, 120, 69046), Pack Hobgoblin Warrior
+-- (9, 1, 120, 69070), Rocket Jump Warrior
 (9, 3, 0, 6603),
 (9, 3, 1, 2973),
 (9, 3, 2, 75),
+-- (9, 3, 120, 69041), Rocket Barrage Hunter
+-- (9, 3, 120, 69046), Pack Hobgoblin Hunter
+-- (9, 3, 120, 69070), Rocket Jump Hunter
 (9, 4, 0, 6603),
 (9, 4, 1, 1752),
 (9, 4, 2, 2098),
 (9, 4, 3, 2764),
+-- (9, 4, 120, 69041), Rocket Barrage Rogue
+-- (9, 4, 120, 69046), Pack Hobgoblin Rogue
+-- (9, 4, 120, 69070), Rocket Jump Rogue
 (9, 5, 0, 585),
 (9, 5, 1, 2050),
+-- (9, 5, 120, 69041), Rocket Barrage Priest
+-- (9, 5, 120, 69046), Pack Hobgoblin Priest
+-- (9, 5, 120, 69070), Rocket Jump Priest
 (9, 6, 0, 6603),
 (9, 6, 1, 49576),
 (9, 6, 2, 45477),
 (9, 6, 3, 45462),
 (9, 6, 4, 45902),
 (9, 6, 5, 47541),
+-- (9, 6, 120, 69041), Rocket Barrage Death Knight
+-- (9, 6, 120, 69046), Pack Hobgoblin Death Knight
+-- (9, 6, 120, 69070), Rocket Jump Death Knight
 (9, 7, 0, 6603),
 (9, 7, 1, 403),
 (9, 7, 2, 331),
+-- (9, 7, 120, 69041), Rocket Barrage Shaman
+-- (9, 7, 120, 69046), Pack Hobgoblin Shaman
+-- (9, 7, 120, 69070), Rocket Jump Shaman
 (9, 8, 0, 133),
 (9, 8, 1, 168),
+-- (9, 8, 120, 69041), Rocket Barrage Mage
+-- (9, 8, 120, 69046), Pack Hobgoblin Mage
+-- (9, 8, 120, 69070), Rocket Jump Mage
 (9, 9, 0, 686),
 (9, 9, 1, 687),
+-- (9, 9, 120, 69041), Rocket Barrage Warlock
+-- (9, 9, 120, 69046), Pack Hobgoblin Warlock
+-- (9, 9, 120, 69070), Rocket Jump Warlock
 (12, 1, 72, 6603),
 (12, 1, 73, 78),
 (12, 1, 84, 6603),
 (12, 1, 96, 6603),
+-- (12, 1, 120, 68992), Darkflight Warrior
+-- (12, 1, 120, 68996), Two Forms Warrior
+-- (12, 1, 120, 87840), Running Wild Warrior
 (12, 3, 0, 6603),
 (12, 3, 1, 2973),
 (12, 3, 2, 75),
+-- (12, 3, 120, 68992), Darkflight Hunter
+-- (12, 3, 120, 68996), Two Forms Hunter
+-- (12, 3, 120, 87840), Running Wild Hunter
 (12, 4, 0, 6603),
 (12, 4, 1, 1752),
 (12, 4, 2, 2098),
 (12, 4, 3, 2764),
+-- (12, 4, 120, 68992), Darkflight Rogue
+-- (12, 4, 120, 68996), Two Forms Rogue
+-- (12, 4, 120, 87840), Running Wild Rogue
 (12, 5, 0, 585),
 (12, 5, 1, 2050),
+-- (12, 5, 120, 68992), Darkflight Priest
+-- (12, 5, 120, 68996), Two Forms Priest
+-- (12, 5, 120, 87840), Running Wild Priest
 (12, 6, 0, 6603),
 (12, 6, 1, 49576),
 (12, 6, 2, 45477),
 (12, 6, 3, 45462),
 (12, 6, 4, 45902),
 (12, 6, 5, 47541),
+-- (12, 6, 120, 68992), Darkflight Death Knight
+-- (12, 6, 120, 68996), Two Forms Death Knight
+-- (12, 6, 120, 87840), Running Wild Death Knight
 (12, 8, 0, 133),
 (12, 8, 1, 168),
+-- (12, 8, 120, 68992), Darkflight Mage
+-- (12, 8, 120, 68996), Two Forms Mage
+-- (12, 8, 120, 87840), Running Wild Mage
 (12, 9, 0, 686),
 (12, 9, 1, 687),
+-- (12, 9, 120, 68992), Darkflight Warlock
+-- (12, 9, 120, 68996), Two Forms Warlock
+-- (12, 9, 120, 87840), Running Wild Warlock
 (12, 11, 0, 5176),
 (12, 11, 1, 5185),
 (12, 11, 72, 6603),
 (12, 11, 96, 6603);
+-- (12, 11, 120, 68992), Darkflight Druid
+-- (12, 11, 120, 68996), Two Forms Druid
+-- (12, 11, 120, 87840), Running Wild Druid
 
 UPDATE `playercreateinfo_skills` SET `racemask` = `racemask` + 256 WHERE `racemask` & 2;
 UPDATE `playercreateinfo_skills` SET `racemask` = `racemask` + 2048 WHERE `racemask` & 1;
