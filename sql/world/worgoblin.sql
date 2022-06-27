@@ -1458,5 +1458,23 @@ INSERT INTO `creature_template` (`entry`, `difficulty_entry_1`, `difficulty_entr
 (55272, 0, 0, 0, 0, 0, 39096, 0, 0, 0, 'Mountain Horse', NULL, NULL, 0, 20, 20, 0, 35, 0, 1, 1.38571, 1, 1, 20, 1, 0, 0, 1, 2000, 2000, 1, 1, 1, 0, 2048, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 0, 1, 1, 1, 1, 1, 0, 140, 1, 0, 0, 0, '', 0),
 (55273, 0, 0, 0, 0, 0, 39095, 0, 0, 0, 'Swift Mountain Horse', NULL, NULL, 0, 40, 40, 0, 35, 0, 1, 1.38571, 1, 1, 20, 1, 0, 0, 1, 2000, 2000, 1, 1, 1, 0, 2048, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 0, 1, 1, 1, 1, 1, 0, 140, 1, 0, 0, 0, '', 0);
 
+DELETE FROM `achievement_criteria_data` WHERE `criteria_id` = 13473;
+DELETE FROM `achievement_criteria_data` WHERE `criteria_id` = 13474;
+DELETE FROM `achievement_criteria_data` WHERE `criteria_id` = 13475;
+DELETE FROM `achievement_criteria_data` WHERE `criteria_id` = 13476;
+DELETE FROM `achievement_criteria_data` WHERE `criteria_id` = 13477;
+DELETE FROM `achievement_criteria_data` WHERE `criteria_id` = 13478;
+INSERT INTO `achievement_criteria_data` (`criteria_id`, `type`, `value1`, `value2`, `ScriptName`) VALUES
+(13473, 2, 0, 9, ''),
+(13473, 9, 18, 0, ''),
+(13473, 10, 1, 0, ''),
+(13474, 2, 0, 12, ''),
+(13474, 9, 18, 0, ''),
+(13474, 10, 1, 0, ''),
+(13475, 2, 0, 9, ''),
+(13476, 2, 0, 12, ''),
+(13477, 21, 0, 9, ''),
+(13478, 21, 0, 12, '');
+
 UPDATE quest_template SET AllowableRaces = AllowableRaces + 256 WHERE NOT AllowableRaces & 256 AND AllowableRaces & 2 AND AllowableRaces != -1 AND AllowableRaces != 2147483647 AND AllowableRaces != 2047 AND AllowableRaces != 4095 AND AllowableRaces != 8191 AND AllowableRaces != 16383 AND AllowableRaces != 32767 AND AllowableRaces != 65535 AND AllowableRaces != 131071 AND AllowableRaces != 262143 AND AllowableRaces != 524287 AND AllowableRaces != 1048575 AND AllowableRaces != 2097151;
 UPDATE quest_template SET AllowableRaces = AllowableRaces + 2048 WHERE NOT AllowableRaces & 2048 AND AllowableRaces & 1 AND AllowableRaces != -1 AND AllowableRaces != 2147483647 AND AllowableRaces != 2047 AND AllowableRaces != 4095 AND AllowableRaces != 8191 AND AllowableRaces != 16383 AND AllowableRaces != 32767 AND AllowableRaces != 65535 AND AllowableRaces != 131071 AND AllowableRaces != 262143 AND AllowableRaces != 524287 AND AllowableRaces != 1048575 AND AllowableRaces != 2097151;
