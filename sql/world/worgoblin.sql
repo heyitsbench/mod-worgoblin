@@ -1283,7 +1283,7 @@ INSERT INTO `player_levelstats` (`race`, `class`, `level`, `str`, `agi`, `sta`, 
 (12, 11, 80, 94, 77, 100, 138, 185);
 
 INSERT INTO `playercreateinfo` (`race`, `class`, `map`, `zone`, `position_x`, `position_y`, `position_z`, `orientation`) VALUES
-(9, 1, 1, 14, -618.518, -4251.67, 38.718, 0),
+(9, 1, 1, 14, -618.518, -4251.67, 38.718, 0), -- Goblins spawn with Orcs/Trolls. Currently the DBC uses the tauren flyby camera, so I gotta fix that.
 (9, 3, 1, 14, -618.518, -4251.67, 38.718, 0),
 (9, 4, 1, 14, -618.518, -4251.67, 38.718, 0),
 (9, 5, 1, 14, -618.518, -4251.67, 38.718, 0),
@@ -1291,7 +1291,7 @@ INSERT INTO `playercreateinfo` (`race`, `class`, `map`, `zone`, `position_x`, `p
 (9, 7, 1, 14, -618.518, -4251.67, 38.718, 0),
 (9, 8, 1, 14, -618.518, -4251.67, 38.718, 0),
 (9, 9, 1, 14, -618.518, -4251.67, 38.718, 0),
-(12, 1, 1, 141, 10311.3, 832.463, 1326.41, 5.69632),
+(12, 1, 1, 141, 10311.3, 832.463, 1326.41, 5.69632), -- Worgen spawn with Nelfs.
 (12, 3, 1, 141, 10311.3, 832.463, 1326.41, 5.69632),
 (12, 4, 1, 141, 10311.3, 832.463, 1326.41, 5.69632),
 (12, 5, 1, 141, 10311.3, 832.463, 1326.41, 5.69632),
@@ -1424,8 +1424,8 @@ UPDATE `playercreateinfo_skills` SET `racemask` = `racemask` + 2304 WHERE `skill
 INSERT INTO `playercreateinfo_skills` (`raceMask`, `classMask`, `skill`, `rank`, `comment`) VALUES
 (2048, 0, 789, 0, 'Worgen - Racial');
 
-UPDATE `playercreateinfo_spell_custom` SET `racemask` = `racemask` + 256 WHERE `racemask` & 2;
-UPDATE `playercreateinfo_spell_custom` SET `racemask` = `racemask` + 2048 WHERE `racemask` & 1;
+UPDATE `playercreateinfo_spell_custom` SET `racemask` = `racemask` + 256 WHERE `racemask` & 2; -- This whole section is going to go away eventually,
+UPDATE `playercreateinfo_spell_custom` SET `racemask` = `racemask` + 2048 WHERE `racemask` & 1; -- But for now it's here because I don't care.
 UPDATE `playercreateinfo_spell_custom` SET `racemask` = 4095 WHERE `racemask` = 0;
 DELETE FROM `playercreateinfo_spell_custom` WHERE `racemask` = 2048;
 INSERT INTO `playercreateinfo_spell_custom` (`racemask`, `classmask`, `Spell`, `Note`) VALUES
@@ -1441,12 +1441,12 @@ DELETE FROM `creature_model_info` WHERE `DisplayID` = 39096;
 DELETE FROM `creature_model_info` WHERE `DisplayID` = 35249;
 DELETE FROM `creature_model_info` WHERE `DisplayID` = 35250;
 INSERT INTO `creature_model_info` (`DisplayID`, `BoundingRadius`, `CombatReach`, `Gender`, `DisplayID_Other_Gender`) VALUES
-(33000, 0.406, 1.5, 0, 0),
-(33001, 0.406, 1.5, 1, 0),
-(39095, 1, 1.5, 2, 0),
-(39096, 1, 1.5, 2, 0),
-(35249, 0.35, 1.5, 2, 0),
-(35250, 0.35, 1.5, 2, 0);
+(33000, 0.406, 1.5, 0, 0), -- Worgen
+(33001, 0.406, 1.5, 1, 0), -- Worgenette
+(39095, 1, 1.5, 2, 0), -- Horse
+(39096, 1, 1.5, 2, 0), -- Quik-horse
+(35249, 0.35, 1.5, 2, 0), -- Trike
+(35250, 0.35, 1.5, 2, 0); -- Quik-trike
 
 DELETE FROM `creature_template` WHERE `entry` = 46754;
 DELETE FROM `creature_template` WHERE `entry` = 46755;
@@ -1465,16 +1465,16 @@ DELETE FROM `achievement_criteria_data` WHERE `criteria_id` = 13476;
 DELETE FROM `achievement_criteria_data` WHERE `criteria_id` = 13477;
 DELETE FROM `achievement_criteria_data` WHERE `criteria_id` = 13478;
 INSERT INTO `achievement_criteria_data` (`criteria_id`, `type`, `value1`, `value2`, `ScriptName`) VALUES
-(13473, 2, 0, 9, ''),
+(13473, 2, 0, 9, ''), -- Achievement 2422 (Shake Your Bunny-Maker)
 (13473, 9, 18, 0, ''),
 (13473, 10, 1, 0, ''),
 (13474, 2, 0, 12, ''),
 (13474, 9, 18, 0, ''),
 (13474, 10, 1, 0, ''),
-(13475, 2, 0, 9, ''),
+(13475, 2, 0, 9, ''), -- Achievement 291 (Check Your Head)
 (13476, 2, 0, 12, ''),
-(13477, 21, 0, 9, ''),
-(13478, 21, 0, 12, '');
+(13477, 21, 0, 9, ''), -- Achievement 1429 (Realm First! Level 80 Goblin)
+(13478, 21, 0, 12, ''); -- Achievement 1430 (Realm First! Level 80 Worgen)
 
 UPDATE quest_template SET AllowableRaces = AllowableRaces + 256 WHERE NOT AllowableRaces & 256 AND AllowableRaces & 2 AND AllowableRaces != -1 AND AllowableRaces != 2147483647 AND AllowableRaces != 2047 AND AllowableRaces != 4095 AND AllowableRaces != 8191 AND AllowableRaces != 16383 AND AllowableRaces != 32767 AND AllowableRaces != 65535 AND AllowableRaces != 131071 AND AllowableRaces != 262143 AND AllowableRaces != 524287 AND AllowableRaces != 1048575 AND AllowableRaces != 2097151;
 UPDATE quest_template SET AllowableRaces = AllowableRaces + 2048 WHERE NOT AllowableRaces & 2048 AND AllowableRaces & 1 AND AllowableRaces != -1 AND AllowableRaces != 2147483647 AND AllowableRaces != 2047 AND AllowableRaces != 4095 AND AllowableRaces != 8191 AND AllowableRaces != 16383 AND AllowableRaces != 32767 AND AllowableRaces != 65535 AND AllowableRaces != 131071 AND AllowableRaces != 262143 AND AllowableRaces != 524287 AND AllowableRaces != 1048575 AND AllowableRaces != 2097151;
