@@ -1424,11 +1424,8 @@ UPDATE `playercreateinfo_skills` SET `racemask` = `racemask` + 2304 WHERE `skill
 INSERT INTO `playercreateinfo_skills` (`raceMask`, `classMask`, `skill`, `rank`, `comment`) VALUES
 (2048, 0, 789, 0, 'Worgen - Racial');
 
-UPDATE `playercreateinfo_spell_custom` SET `racemask` = `racemask` + 256 WHERE `racemask` & 2; -- This whole section is going to go away eventually,
-UPDATE `playercreateinfo_spell_custom` SET `racemask` = `racemask` + 2048 WHERE `racemask` & 1; -- But for now it's here because I don't care.
-UPDATE `playercreateinfo_spell_custom` SET `racemask` = 4095 WHERE `racemask` = 0;
-DELETE FROM `playercreateinfo_spell_custom` WHERE `racemask` = 2048;
-INSERT INTO `playercreateinfo_spell_custom` (`racemask`, `classmask`, `Spell`, `Note`) VALUES
+DELETE FROM `playercreateinfo_spell_custom` WHERE `racemask` = 2048; --                          This whole section is going to go away eventually,
+INSERT INTO `playercreateinfo_spell_custom` (`racemask`, `classmask`, `Spell`, `Note`) VALUES -- But for now it's here because I don't care.
 (2048, 0, 68992, 'Darkflight'),
 (2048, 0, 68975, 'Viciousness'),
 (2048, 0, 68976, 'Aberration'),
