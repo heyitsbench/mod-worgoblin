@@ -24,7 +24,7 @@ jobs:
           submodules: 'recursive'
           path: 'modules/mod-worgoblin'
       - name: Apply core patch
-        run: git apply --ignore-space-change --ignore-whitespace modules/mod-worgoblin/worgoblin.patch
+        run: git apply --ignore-space-change --ignore-whitespace modules/mod-worgoblin/goblin.patch
       - name: Cache
         uses: actions/cache@v2
         with:
