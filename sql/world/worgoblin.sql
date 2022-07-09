@@ -1519,20 +1519,15 @@ INSERT INTO `playercreateinfo_action` (`race`, `class`, `button`, `action`) VALU
 -- (12, 11, 120, 68996), Two Forms Druid
 -- (12, 11, 120, 87840), Running Wild Druid
 
-UPDATE `playercreateinfo_skills` SET `racemask` = `racemask` + 256 WHERE `racemask` & 2;
-UPDATE `playercreateinfo_skills` SET `racemask` = `racemask` + 2048 WHERE `racemask` & 1;
-UPDATE `playercreateinfo_skills` SET `racemask` = 4095 WHERE `racemask` = 0;
-UPDATE `playercreateinfo_skills` SET `racemask` = `racemask` + 2304 WHERE `skill` = 46; -- Fix guns issue for gobby worgs.
+UPDATE `playercreateinfo_skills` SET `racemask` = `racemask` + 2304 WHERE `skill` = 46; -- Guns
+UPDATE `playercreateinfo_skills` SET `racemask` = `racemask` + 2304 WHERE `skill` = 173; -- Daggers
+UPDATE `playercreateinfo_skills` SET `racemask` = `racemask` + 256 WHERE `skill` = 109; -- Orcish language goblins
+UPDATE `playercreateinfo_skills` SET `racemask` = `racemask` + 2048 WHERE `skill` = 98; -- Common language worgen
 INSERT INTO `playercreateinfo_skills` (`raceMask`, `classMask`, `skill`, `rank`, `comment`) VALUES
-(2048, 0, 789, 0, 'Worgen - Racial'),
-(256, 0, 790, 0, 'Goblin - Racial');
-
-DELETE FROM `playercreateinfo_spell_custom` WHERE `racemask` = 2048; --                          This whole section is going to go away eventually,
-INSERT INTO `playercreateinfo_spell_custom` (`racemask`, `classmask`, `Spell`, `Note`) VALUES -- But for now it's here because I don't care.
-(2048, 0, 68992, 'Darkflight'),
-(2048, 0, 68975, 'Viciousness'),
-(2048, 0, 68976, 'Aberration'),
-(2048, 0, 68978, 'Flayer');
+(2048, 8, 44, 0, 'Axes - Worgen'), -- Yes, these are hackfixes and I'm very mad about it,
+(256, 8, 54, 0, 'Maces - Goblin'), -- But right now I don't see any other way to add these.
+(2048, 0, 789, 0, 'Worgen - Racial'), -- And unfortunately, I really want worgen and goblins
+(256, 0, 790, 0, 'Goblin - Racial'); -- To have their starting gear from cata, and the rogues have funky weapons.
 
 DELETE FROM `creature_model_info` WHERE `DisplayID` = 33000;
 DELETE FROM `creature_model_info` WHERE `DisplayID` = 33001;
