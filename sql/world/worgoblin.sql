@@ -1521,6 +1521,7 @@ INSERT INTO `playercreateinfo_action` (`race`, `class`, `button`, `action`) VALU
 
 UPDATE `playercreateinfo_skills` SET `racemask` = `racemask` + 2304 WHERE `skill` = 46; -- Guns
 UPDATE `playercreateinfo_skills` SET `racemask` = `racemask` + 2304 WHERE `skill` = 173; -- Daggers
+UPDATE `playercreateinfo_skills` SET `racemask` = `racemask` + 256 WHERE `skill` = 160; -- 2h-mace goblins
 UPDATE `playercreateinfo_skills` SET `racemask` = `racemask` + 256 WHERE `skill` = 109; -- Orcish language goblins
 UPDATE `playercreateinfo_skills` SET `racemask` = `racemask` + 2048 WHERE `skill` = 98; -- Common language worgen
 INSERT INTO `playercreateinfo_skills` (`raceMask`, `classMask`, `skill`, `rank`, `comment`) VALUES
