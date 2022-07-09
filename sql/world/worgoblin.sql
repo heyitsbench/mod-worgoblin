@@ -1536,6 +1536,7 @@ INSERT INTO `playercreateinfo_spell_custom` (`racemask`, `classmask`, `Spell`, `
 
 DELETE FROM `creature_model_info` WHERE `DisplayID` = 33000;
 DELETE FROM `creature_model_info` WHERE `DisplayID` = 33001;
+DELETE FROM `creature_model_info` WHERE `DisplayID` = 32385;
 DELETE FROM `creature_model_info` WHERE `DisplayID` = 39095;
 DELETE FROM `creature_model_info` WHERE `DisplayID` = 39096;
 DELETE FROM `creature_model_info` WHERE `DisplayID` = 35249;
@@ -1543,6 +1544,7 @@ DELETE FROM `creature_model_info` WHERE `DisplayID` = 35250;
 INSERT INTO `creature_model_info` (`DisplayID`, `BoundingRadius`, `CombatReach`, `Gender`, `DisplayID_Other_Gender`) VALUES
 (33000, 0.406, 1.5, 0, 0), -- Worgen
 (33001, 0.406, 1.5, 1, 0), -- Worgenette
+(32385, 0.2325, 1.5, 0, 0), -- Gobber
 (39095, 1, 1.5, 2, 0), -- Horse
 (39096, 1, 1.5, 2, 0), -- Quik-horse
 (35249, 0.35, 1.5, 2, 0), -- Trike
