@@ -1524,7 +1524,8 @@ UPDATE `playercreateinfo_skills` SET `racemask` = `racemask` + 2048 WHERE `racem
 UPDATE `playercreateinfo_skills` SET `racemask` = 4095 WHERE `racemask` = 0;
 UPDATE `playercreateinfo_skills` SET `racemask` = `racemask` + 2304 WHERE `skill` = 46; -- Fix guns issue for gobby worgs.
 INSERT INTO `playercreateinfo_skills` (`raceMask`, `classMask`, `skill`, `rank`, `comment`) VALUES
-(2048, 0, 789, 0, 'Worgen - Racial');
+(2048, 0, 789, 0, 'Worgen - Racial'),
+(256, 0, 790, 0, 'Goblin - Racial');
 
 DELETE FROM `playercreateinfo_spell_custom` WHERE `racemask` = 2048; --                          This whole section is going to go away eventually,
 INSERT INTO `playercreateinfo_spell_custom` (`racemask`, `classmask`, `Spell`, `Note`) VALUES -- But for now it's here because I don't care.
