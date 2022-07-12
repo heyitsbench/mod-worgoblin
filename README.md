@@ -30,7 +30,8 @@ Upon downloading the repo, you'll have the patch-contents file available to you.
 
 ### 5) Move the [patch-contents](https://github.com/benjymansy123/mod-worgoblin/tree/master/patch-contents) folder to your Data folder in your WoW client and rename the folder to `patch-A.MPQ`.
 
-### 6) Remove signature checks from your WoW executable using the patcher for [Windows](https://github.com/benjymansy123/mod-worgoblin/blob/master/wow_unsig(12340).exe). A Mac .app file will be provided in the future.
+### 6) Remove signature checks from your WoW executable.
+I recommend Windows users to use [this patcher](https://model-changing.net/index.php?app=downloads&module=downloads&controller=view&id=314&tab=details) created by kebabstorm to patch your Wow.exe file. I recommend macOS users to download this [pre-patched .app file](https://github.com/benjymansy123/custom-race-ac-12_6_21/releases/download/sig-check/WoW.app.zip), since no easy patcher exists for macOS.
 
 Because WoW uses signature checks so as to not allow Interface files to be modified, we need to remove those checks in order to be able to use custom races. This is accomplished using the patcher included in the repo. Move the patcher into your WoW client directory and run it. Again, feel free to make a backup of your original executable.
 
