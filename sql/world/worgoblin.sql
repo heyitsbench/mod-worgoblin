@@ -1,5 +1,4 @@
-DELETE FROM `player_levelstats` WHERE `race` = 9;
-DELETE FROM `player_levelstats` WHERE `race` = 12;
+DELETE FROM `player_levelstats` WHERE `race` = 9 OR `race` = 12;
 INSERT INTO `player_levelstats` (`race`, `class`, `level`, `str`, `agi`, `sta`, `inte`, `spi`) VALUES
 (9, 1, 1, 23, 20, 22, 20, 20),
 (9, 1, 2, 24, 21, 23, 20, 20),
@@ -1282,6 +1281,7 @@ INSERT INTO `player_levelstats` (`race`, `class`, `level`, `str`, `agi`, `sta`, 
 (12, 11, 79, 93, 76, 98, 136, 158),
 (12, 11, 80, 94, 77, 100, 138, 185);
 
+DELETE FROM `playercreateinfo` WHERE `race` = 9 OR `race` = 12;
 INSERT INTO `playercreateinfo` (`race`, `class`, `map`, `zone`, `position_x`, `position_y`, `position_z`, `orientation`) VALUES
 (9, 1, 1, 14, -618.518, -4251.67, 38.718, 0), -- Goblins spawn with Orcs/Trolls. Currently the DBC uses the tauren flyby camera, so I gotta fix that.
 (9, 3, 1, 14, -618.518, -4251.67, 38.718, 0),
@@ -1303,42 +1303,14 @@ INSERT INTO `playercreateinfo` (`race`, `class`, `map`, `zone`, `position_x`, `p
 UPDATE item_template SET allowablerace = allowablerace + 256 WHERE NOT allowablerace & 256 AND allowablerace & 2 AND allowablerace != -1 AND allowablerace != 2147483647 AND allowablerace != 2047 AND allowablerace != 4095 AND allowablerace != 8191 AND allowablerace != 16383 AND allowablerace != 32767 AND allowablerace != 65535 AND allowablerace != 131071 AND allowablerace != 262143 AND allowablerace != 524287 AND allowablerace != 1048575 AND allowablerace != 2097151;
 UPDATE item_template SET allowablerace = allowablerace + 2048 WHERE NOT allowablerace & 2048 AND allowablerace & 1 AND allowablerace != -1 AND allowablerace != 2147483647 AND allowablerace != 2047 AND allowablerace != 4095 AND allowablerace != 8191 AND allowablerace != 16383 AND allowablerace != 32767 AND allowablerace != 65535 AND allowablerace != 131071 AND allowablerace != 262143 AND allowablerace != 524287 AND allowablerace != 1048575 AND allowablerace != 2097151;
 
-DELETE FROM `item_template` WHERE `entry` = 62461;
-DELETE FROM `item_template` WHERE `entry` = 62462;
-DELETE FROM `item_template` WHERE `entry` = 73838;
-DELETE FROM `item_template` WHERE `entry` = 73839;
+DELETE FROM `item_template` WHERE `entry` IN (62461, 62462, 73838, 73839);
 INSERT INTO `item_template` (`entry`, `class`, `subclass`, `SoundOverrideSubclass`, `name`, `displayid`, `Quality`, `Flags`, `FlagsExtra`, `BuyCount`, `BuyPrice`, `SellPrice`, `InventoryType`, `AllowableClass`, `AllowableRace`, `ItemLevel`, `RequiredLevel`, `RequiredSkill`, `RequiredSkillRank`, `requiredspell`, `requiredhonorrank`, `RequiredCityRank`, `RequiredReputationFaction`, `RequiredReputationRank`, `maxcount`, `stackable`, `ContainerSlots`, `StatsCount`, `stat_type1`, `stat_value1`, `stat_type2`, `stat_value2`, `stat_type3`, `stat_value3`, `stat_type4`, `stat_value4`, `stat_type5`, `stat_value5`, `stat_type6`, `stat_value6`, `stat_type7`, `stat_value7`, `stat_type8`, `stat_value8`, `stat_type9`, `stat_value9`, `stat_type10`, `stat_value10`, `ScalingStatDistribution`, `ScalingStatValue`, `dmg_min1`, `dmg_max1`, `dmg_type1`, `dmg_min2`, `dmg_max2`, `dmg_type2`, `armor`, `holy_res`, `fire_res`, `nature_res`, `frost_res`, `shadow_res`, `arcane_res`, `delay`, `ammo_type`, `RangedModRange`, `spellid_1`, `spelltrigger_1`, `spellcharges_1`, `spellppmRate_1`, `spellcooldown_1`, `spellcategory_1`, `spellcategorycooldown_1`, `spellid_2`, `spelltrigger_2`, `spellcharges_2`, `spellppmRate_2`, `spellcooldown_2`, `spellcategory_2`, `spellcategorycooldown_2`, `spellid_3`, `spelltrigger_3`, `spellcharges_3`, `spellppmRate_3`, `spellcooldown_3`, `spellcategory_3`, `spellcategorycooldown_3`, `spellid_4`, `spelltrigger_4`, `spellcharges_4`, `spellppmRate_4`, `spellcooldown_4`, `spellcategory_4`, `spellcategorycooldown_4`, `spellid_5`, `spelltrigger_5`, `spellcharges_5`, `spellppmRate_5`, `spellcooldown_5`, `spellcategory_5`, `spellcategorycooldown_5`, `bonding`, `description`, `PageText`, `LanguageID`, `PageMaterial`, `startquest`, `lockid`, `Material`, `sheath`, `RandomProperty`, `RandomSuffix`, `block`, `itemset`, `MaxDurability`, `area`, `Map`, `BagFamily`, `TotemCategory`, `socketColor_1`, `socketContent_1`, `socketColor_2`, `socketContent_2`, `socketColor_3`, `socketContent_3`, `socketBonus`, `GemProperties`, `RequiredDisenchantSkill`, `ArmorDamageModifier`, `duration`, `ItemLimitCategory`, `HolidayId`, `ScriptName`, `DisenchantID`, `FoodType`, `minMoneyLoot`, `maxMoneyLoot`, `flagsCustom`, `VerifiedBuild`) VALUES
 (62461, 15, 5, -1, 'Goblin Trike Key', 134237, 3, 0, 0, 1, 10000, 2500, 0, -1, -1, 20, 20, 762, 75, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 55884, 0, -1, 0, -1, 330, 3000, 87090, 6, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 1, 'Teaches you how to summon this mount. Summons and dismisses a rideable Goblin Trike.', 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, '', 0, 0, 0, 0, 0, 12340),
 (62462, 15, 5, -1, 'Goblin Turbo-Trike Key', 134238, 4, 0, 0, 1, 100000, 25000, 0, -1, -1, 40, 40, 762, 150, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 55884, 0, -1, 0, -1, 330, 3000, 87091, 6, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 1, 'Teaches you how to summon this mount. Summons and dismisses a rideable Goblin Turbo-Trike.', 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, '', 0, 0, 0, 0, 0, 12340),
 (73838, 15, 5, -1, 'Mountain Horse', 132261, 3, 0, 0, 1, 10000, 2500, 0, -1, -1, 20, 20, 762, 75, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 55884, 0, -1, 0, -1, 330, 3000, 103195, 6, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 1, 'Teaches you how to summon this mount. Summons and dismisses a rideable Mountain Horse.', 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, '', 0, 0, 0, 0, 0, 12340),
 (73839, 15, 5, -1, 'Swift Mountain Horse', 132261, 4, 0, 0, 1, 100000, 25000, 0, -1, -1, 40, 40, 762, 150, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 55884, 0, -1, 0, -1, 330, 3000, 103196, 6, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 1, 'Teaches you how to summon this mount. Summons and dismisses a rideable Swift Mountain Horse.', 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, '', 0, 0, 0, 0, 0, 12340);
 
-DELETE FROM `item_template` WHERE  `entry`=49407; -- Worgen starting gear
-DELETE FROM `item_template` WHERE  `entry`=49409;
-DELETE FROM `item_template` WHERE  `entry`=49408;
-DELETE FROM `item_template` WHERE  `entry`=49567;
-DELETE FROM `item_template` WHERE  `entry`=49401;
-DELETE FROM `item_template` WHERE  `entry`=49400;
-DELETE FROM `item_template` WHERE  `entry`=49399;
-DELETE FROM `item_template` WHERE  `entry`=49575;
-DELETE FROM `item_template` WHERE  `entry`=49573;
-DELETE FROM `item_template` WHERE  `entry`=49572;
-DELETE FROM `item_template` WHERE  `entry`=49574;
-DELETE FROM `item_template` WHERE  `entry`=49406;
-DELETE FROM `item_template` WHERE  `entry`=49404;
-DELETE FROM `item_template` WHERE  `entry`=49403;
-DELETE FROM `item_template` WHERE  `entry`=49564;
-DELETE FROM `item_template` WHERE  `entry`=49565;
-DELETE FROM `item_template` WHERE  `entry`=49566;
-DELETE FROM `item_template` WHERE  `entry`=49563;
-DELETE FROM `item_template` WHERE  `entry`=49577;
-DELETE FROM `item_template` WHERE  `entry`=49579;
-DELETE FROM `item_template` WHERE  `entry`=49576;
-DELETE FROM `item_template` WHERE  `entry`=49578;
-DELETE FROM `item_template` WHERE  `entry`=49569;
-DELETE FROM `item_template` WHERE  `entry`=49571;
-DELETE FROM `item_template` WHERE  `entry`=49568;
-DELETE FROM `item_template` WHERE  `entry`=49570;
+DELETE FROM `item_template` WHERE  `entry` IN (49407, 49409, 49408, 49567, 49401, 49400, 49399, 49575, 49573, 49572, 49574, 49406, 49404, 49403, 49564, 49565, 49566, 49563, 49577, 49579, 49576, 49578, 49569, 49571, 49568, 49570); -- Worgen starting gear
 INSERT INTO `item_template` (`entry`, `class`, `subclass`, `SoundOverrideSubclass`, `name`, `displayid`, `Quality`, `Flags`, `FlagsExtra`, `BuyCount`, `BuyPrice`, `SellPrice`, `InventoryType`, `AllowableClass`, `AllowableRace`, `ItemLevel`, `RequiredLevel`, `RequiredSkill`, `RequiredSkillRank`, `requiredspell`, `requiredhonorrank`, `RequiredCityRank`, `RequiredReputationFaction`, `RequiredReputationRank`, `maxcount`, `stackable`, `ContainerSlots`, `StatsCount`, `stat_type1`, `stat_value1`, `stat_type2`, `stat_value2`, `stat_type3`, `stat_value3`, `stat_type4`, `stat_value4`, `stat_type5`, `stat_value5`, `stat_type6`, `stat_value6`, `stat_type7`, `stat_value7`, `stat_type8`, `stat_value8`, `stat_type9`, `stat_value9`, `stat_type10`, `stat_value10`, `ScalingStatDistribution`, `ScalingStatValue`, `dmg_min1`, `dmg_max1`, `dmg_type1`, `dmg_min2`, `dmg_max2`, `dmg_type2`, `armor`, `holy_res`, `fire_res`, `nature_res`, `frost_res`, `shadow_res`, `arcane_res`, `delay`, `ammo_type`, `RangedModRange`, `spellid_1`, `spelltrigger_1`, `spellcharges_1`, `spellppmRate_1`, `spellcooldown_1`, `spellcategory_1`, `spellcategorycooldown_1`, `spellid_2`, `spelltrigger_2`, `spellcharges_2`, `spellppmRate_2`, `spellcooldown_2`, `spellcategory_2`, `spellcategorycooldown_2`, `spellid_3`, `spelltrigger_3`, `spellcharges_3`, `spellppmRate_3`, `spellcooldown_3`, `spellcategory_3`, `spellcategorycooldown_3`, `spellid_4`, `spelltrigger_4`, `spellcharges_4`, `spellppmRate_4`, `spellcooldown_4`, `spellcategory_4`, `spellcategorycooldown_4`, `spellid_5`, `spelltrigger_5`, `spellcharges_5`, `spellppmRate_5`, `spellcooldown_5`, `spellcategory_5`, `spellcategorycooldown_5`, `bonding`, `description`, `PageText`, `LanguageID`, `PageMaterial`, `startquest`, `lockid`, `Material`, `sheath`, `RandomProperty`, `RandomSuffix`, `block`, `itemset`, `MaxDurability`, `area`, `Map`, `BagFamily`, `TotemCategory`, `socketColor_1`, `socketContent_1`, `socketColor_2`, `socketContent_2`, `socketColor_3`, `socketContent_3`, `socketBonus`, `GemProperties`, `RequiredDisenchantSkill`, `ArmorDamageModifier`, `duration`, `ItemLimitCategory`, `HolidayId`, `ScriptName`, `DisenchantID`, `FoodType`, `minMoneyLoot`, `maxMoneyLoot`, `flagsCustom`, `VerifiedBuild`) VALUES
 (49567, 4, 0, -1, 'Gilnean Adventurer\'s Shirt', 62558, 1, 0, 0, 1, 0, 1, 4, -1, -1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1000, 0, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, '', 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, '', 0, 0, 0, 0, 0, 0),
 (49576, 4, 3, -1, 'Gilnean Recruit\'s Pants', 68130, 1, 0, 0, 1, 0, 2, 7, -1, -1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 27, 0, 0, 0, 0, 0, 0, 1000, 0, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, '', 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 40, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, '', 0, 0, 0, 0, 0, 0),
@@ -1367,29 +1339,7 @@ INSERT INTO `item_template` (`entry`, `class`, `subclass`, `SoundOverrideSubclas
 (49565, 4, 2, -1, 'Gilnean Novice\'s Gloves', 65852, 1, 0, 0, 1, 0, 1, 10, -1, -1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 1000, 0, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, '', 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, '', 0, 0, 0, 0, 0, 0),
 (49566, 4, 2, -1, 'Gilnean Novice\'s Pants', 65853, 1, 0, 0, 1, 0, 1, 7, -1, -1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 17, 0, 0, 0, 0, 0, 0, 1000, 0, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, '', 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 40, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, '', 0, 0, 0, 0, 0, 0);
 
-DELETE FROM `item_template` WHERE  `entry`=49528; -- Goblin starting gear
-DELETE FROM `item_template` WHERE  `entry`=49524;
-DELETE FROM `item_template` WHERE  `entry`=49527;
-DELETE FROM `item_template` WHERE  `entry`=49529;
-DELETE FROM `item_template` WHERE  `entry`=49502;
-DELETE FROM `item_template` WHERE  `entry`=49503;
-DELETE FROM `item_template` WHERE  `entry`=49504;
-DELETE FROM `item_template` WHERE  `entry`=52532;
-DELETE FROM `item_template` WHERE  `entry`=49514;
-DELETE FROM `item_template` WHERE  `entry`=49515;
-DELETE FROM `item_template` WHERE  `entry`=49516;
-DELETE FROM `item_template` WHERE  `entry`=49510;
-DELETE FROM `item_template` WHERE  `entry`=49512;
-DELETE FROM `item_template` WHERE  `entry`=49531;
-DELETE FROM `item_template` WHERE  `entry`=52550;
-DELETE FROM `item_template` WHERE  `entry`=52551;
-DELETE FROM `item_template` WHERE  `entry`=52552;
-DELETE FROM `item_template` WHERE  `entry`=49505;
-DELETE FROM `item_template` WHERE  `entry`=49506;
-DELETE FROM `item_template` WHERE  `entry`=49508;
-DELETE FROM `item_template` WHERE  `entry`=49520;
-DELETE FROM `item_template` WHERE  `entry`=49521;
-DELETE FROM `item_template` WHERE  `entry`=49522;
+DELETE FROM `item_template` WHERE  `entry` IN (49528, 49524, 49527, 49529, 49502, 49503, 49504, 52532, 49514, 49515, 49516, 49510, 49512, 49531, 52550, 52551, 52552, 49505, 49506, 49508, 49520, 49521, 49522); -- Goblin starting gear
 INSERT INTO `item_template` (`entry`, `class`, `subclass`, `SoundOverrideSubclass`, `name`, `displayid`, `Quality`, `Flags`, `FlagsExtra`, `BuyCount`, `BuyPrice`, `SellPrice`, `InventoryType`, `AllowableClass`, `AllowableRace`, `ItemLevel`, `RequiredLevel`, `RequiredSkill`, `RequiredSkillRank`, `requiredspell`, `requiredhonorrank`, `RequiredCityRank`, `RequiredReputationFaction`, `RequiredReputationRank`, `maxcount`, `stackable`, `ContainerSlots`, `StatsCount`, `stat_type1`, `stat_value1`, `stat_type2`, `stat_value2`, `stat_type3`, `stat_value3`, `stat_type4`, `stat_value4`, `stat_type5`, `stat_value5`, `stat_type6`, `stat_value6`, `stat_type7`, `stat_value7`, `stat_type8`, `stat_value8`, `stat_type9`, `stat_value9`, `stat_type10`, `stat_value10`, `ScalingStatDistribution`, `ScalingStatValue`, `dmg_min1`, `dmg_max1`, `dmg_type1`, `dmg_min2`, `dmg_max2`, `dmg_type2`, `armor`, `holy_res`, `fire_res`, `nature_res`, `frost_res`, `shadow_res`, `arcane_res`, `delay`, `ammo_type`, `RangedModRange`, `spellid_1`, `spelltrigger_1`, `spellcharges_1`, `spellppmRate_1`, `spellcooldown_1`, `spellcategory_1`, `spellcategorycooldown_1`, `spellid_2`, `spelltrigger_2`, `spellcharges_2`, `spellppmRate_2`, `spellcooldown_2`, `spellcategory_2`, `spellcategorycooldown_2`, `spellid_3`, `spelltrigger_3`, `spellcharges_3`, `spellppmRate_3`, `spellcooldown_3`, `spellcategory_3`, `spellcategorycooldown_3`, `spellid_4`, `spelltrigger_4`, `spellcharges_4`, `spellppmRate_4`, `spellcooldown_4`, `spellcategory_4`, `spellcategorycooldown_4`, `spellid_5`, `spelltrigger_5`, `spellcharges_5`, `spellppmRate_5`, `spellcooldown_5`, `spellcategory_5`, `spellcategorycooldown_5`, `bonding`, `description`, `PageText`, `LanguageID`, `PageMaterial`, `startquest`, `lockid`, `Material`, `sheath`, `RandomProperty`, `RandomSuffix`, `block`, `itemset`, `MaxDurability`, `area`, `Map`, `BagFamily`, `TotemCategory`, `socketColor_1`, `socketContent_1`, `socketColor_2`, `socketContent_2`, `socketColor_3`, `socketContent_3`, `socketBonus`, `GemProperties`, `RequiredDisenchantSkill`, `ArmorDamageModifier`, `duration`, `ItemLimitCategory`, `HolidayId`, `ScriptName`, `DisenchantID`, `FoodType`, `minMoneyLoot`, `maxMoneyLoot`, `flagsCustom`, `VerifiedBuild`) VALUES
 (49528, 4, 3, -1, 'Goblin Brawler\'s Greaves', 69183, 1, 0, 0, 1, 0, 2, 7, -1, -1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 1000, 0, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, '', 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 40, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, '', 0, 0, 0, 0, 0, 0),
 (49524, 4, 3, -1, 'Goblin Brawler\'s Harness', 69181, 1, 0, 0, 1, 0, 2, 5, -1, -1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 1000, 0, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, '', 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 55, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, '', 0, 0, 0, 0, 0, 0),
@@ -1530,13 +1480,7 @@ INSERT INTO `playercreateinfo_skills` (`raceMask`, `classMask`, `skill`, `rank`,
 (2048, 0, 789, 0, 'Worgen - Racial'), -- And unfortunately, I really want worgen and goblins
 (256, 0, 790, 0, 'Goblin - Racial'); -- To have their starting gear from cata, and the rogues have funky weapons.
 
-DELETE FROM `creature_model_info` WHERE `DisplayID` = 33000;
-DELETE FROM `creature_model_info` WHERE `DisplayID` = 33001;
-DELETE FROM `creature_model_info` WHERE `DisplayID` = 32385;
-DELETE FROM `creature_model_info` WHERE `DisplayID` = 39095;
-DELETE FROM `creature_model_info` WHERE `DisplayID` = 39096;
-DELETE FROM `creature_model_info` WHERE `DisplayID` = 35249;
-DELETE FROM `creature_model_info` WHERE `DisplayID` = 35250;
+DELETE FROM `creature_model_info` WHERE `DisplayID` IN (33000, 33001, 32385, 39095, 39096, 35249, 35250);
 INSERT INTO `creature_model_info` (`DisplayID`, `BoundingRadius`, `CombatReach`, `Gender`, `DisplayID_Other_Gender`) VALUES
 (33000, 0.406, 1.5, 0, 0), -- Worgen
 (33001, 0.406, 1.5, 1, 0), -- Worgenette
@@ -1546,11 +1490,7 @@ INSERT INTO `creature_model_info` (`DisplayID`, `BoundingRadius`, `CombatReach`,
 (35249, 0.35, 1.5, 2, 0), -- Trike
 (35250, 0.35, 1.5, 2, 0); -- Quik-trike
 
-DELETE FROM `creature_template` WHERE `entry` = 36613;
-DELETE FROM `creature_template` WHERE `entry` = 46754;
-DELETE FROM `creature_template` WHERE `entry` = 46755;
-DELETE FROM `creature_template` WHERE `entry` = 55272;
-DELETE FROM `creature_template` WHERE `entry` = 55273;
+DELETE FROM `creature_template` WHERE `entry` IN (36613, 46754, 46755, 55272, 55273);
 INSERT INTO `creature_template` (`entry`, `difficulty_entry_1`, `difficulty_entry_2`, `difficulty_entry_3`, `KillCredit1`, `KillCredit2`, `modelid1`, `modelid2`, `modelid3`, `modelid4`, `name`, `subname`, `IconName`, `gossip_menu_id`, `minlevel`, `maxlevel`, `exp`, `faction`, `npcflag`, `speed_walk`, `speed_run`, `speed_swim`, `speed_flight`, `detection_range`, `scale`, `rank`, `dmgschool`, `DamageModifier`, `BaseAttackTime`, `RangeAttackTime`, `BaseVariance`, `RangeVariance`, `unit_class`, `unit_flags`, `unit_flags2`, `dynamicflags`, `family`, `trainer_type`, `trainer_spell`, `trainer_class`, `trainer_race`, `type`, `type_flags`, `lootid`, `pickpocketloot`, `skinloot`, `PetSpellDataId`, `VehicleId`, `mingold`, `maxgold`, `AIName`, `MovementType`, `HoverHeight`, `HealthModifier`, `ManaModifier`, `ArmorModifier`, `ExperienceModifier`, `RacialLeader`, `movementId`, `RegenHealth`, `mechanic_immune_mask`, `spell_school_immune_mask`, `flags_extra`, `ScriptName`, `VerifiedBuild`) VALUES
 (36613, 0, 0, 0, 0, 0, 32385, 0, 0, 0, 'Gobber', '', NULL, 0, 55, 55, 0, 120, 131072, 1, 1.14286, 1, 1, 18, 1, 0, 0, 1, 2000, 2000, 1, 1, 1, 512, 2048, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, '', 0, 1, 3, 1, 1, 1, 0, 0, 1, 0, 0, 2, '', 12340),
 (46754, 0, 0, 0, 0, 0, 35249, 0, 0, 0, 'Goblin Trike', NULL, NULL, 0, 20, 20, 0, 35, 0, 1, 1.38571, 1, 1, 20, 1, 0, 0, 1, 2000, 2000, 1, 1, 1, 33554432, 2048, 0, 0, 0, 0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, '', 0, 1, 1, 1, 1, 1, 0, 140, 1, 0, 0, 0, '', 0),
@@ -1558,12 +1498,7 @@ INSERT INTO `creature_template` (`entry`, `difficulty_entry_1`, `difficulty_entr
 (55272, 0, 0, 0, 0, 0, 39096, 0, 0, 0, 'Mountain Horse', NULL, NULL, 0, 20, 20, 0, 35, 0, 1, 1.38571, 1, 1, 20, 1, 0, 0, 1, 2000, 2000, 1, 1, 1, 0, 2048, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 0, 1, 1, 1, 1, 1, 0, 140, 1, 0, 0, 0, '', 0),
 (55273, 0, 0, 0, 0, 0, 39095, 0, 0, 0, 'Swift Mountain Horse', NULL, NULL, 0, 40, 40, 0, 35, 0, 1, 1.38571, 1, 1, 20, 1, 0, 0, 1, 2000, 2000, 1, 1, 1, 0, 2048, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 0, 1, 1, 1, 1, 1, 0, 140, 1, 0, 0, 0, '', 0);
 
-DELETE FROM `achievement_criteria_data` WHERE `criteria_id` = 13473;
-DELETE FROM `achievement_criteria_data` WHERE `criteria_id` = 13474;
-DELETE FROM `achievement_criteria_data` WHERE `criteria_id` = 13475;
-DELETE FROM `achievement_criteria_data` WHERE `criteria_id` = 13476;
-DELETE FROM `achievement_criteria_data` WHERE `criteria_id` = 13477;
-DELETE FROM `achievement_criteria_data` WHERE `criteria_id` = 13478;
+DELETE FROM `achievement_criteria_data` WHERE `criteria_id` IN (13473, 13474, 13475, 13476, 13477, 13478);
 INSERT INTO `achievement_criteria_data` (`criteria_id`, `type`, `value1`, `value2`, `ScriptName`) VALUES
 (13473, 2, 0, 9, ''), -- Achievement 2422 (Shake Your Bunny-Maker)
 (13473, 9, 18, 0, ''),
