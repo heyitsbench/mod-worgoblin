@@ -1475,8 +1475,8 @@ INSERT INTO `playercreateinfo_skills` (`raceMask`, `classMask`, `skill`, `rank`,
 
 DELETE FROM `creature_model_info` WHERE `DisplayID` IN (33000, 33001, 32385, 39095, 39096, 35249, 35250);
 INSERT INTO `creature_model_info` (`DisplayID`, `BoundingRadius`, `CombatReach`, `Gender`, `DisplayID_Other_Gender`) VALUES
-(33000, 0.406, 1.5, 0, 0), -- Worgen
-(33001, 0.406, 1.5, 1, 0), -- Worgenette
+(29422, 0.406, 1.5, 0, 0), -- Worgen
+(29423, 0.406, 1.5, 1, 0), -- Worgenette
 (32385, 0.2325, 1.5, 0, 0), -- Gobber
 (39095, 1, 1.5, 2, 0), -- Horse
 (39096, 1, 1.5, 2, 0), -- Quik-horse
