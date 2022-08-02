@@ -1473,6 +1473,9 @@ INSERT INTO `playercreateinfo_skills` (`raceMask`, `classMask`, `skill`, `rank`,
 (2048, 0, 789, 0, 'Worgen - Racial'), -- And unfortunately, I really want worgen and goblins
 (256, 0, 790, 0, 'Goblin - Racial'); -- To have their starting gear from cata, and the rogues have funky weapons.
 
+DELETE FROM `spell_script_names` WHERE `spell_id` = 69041;
+INSERT INTO `spell_script_names` (`spell_id`, `ScriptName`) VALUES (69041, 'spell_rocket_barrage');
+
 DELETE FROM `creature_model_info` WHERE `DisplayID` IN (33000, 33001, 32385, 39095, 39096, 35249, 35250);
 INSERT INTO `creature_model_info` (`DisplayID`, `BoundingRadius`, `CombatReach`, `Gender`, `DisplayID_Other_Gender`) VALUES
 (29422, 0.406, 1.5, 0, 0), -- Worgen
