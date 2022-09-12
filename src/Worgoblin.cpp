@@ -28,7 +28,7 @@ public:
     {
         PrepareSpellScript(rocket_barrage_script);
 
-        void HandleDamage(SpellEffIndex effIndex)
+        void HandleDamage(SpellEffIndex /*effIndex*/)
         {
             Unit* caster = GetCaster();
             int32 basePoints = 0 + caster->getLevel() * 2;
