@@ -1,5 +1,38 @@
+---
+ src/server/game/Entities/Player/Player.cpp    |  3 +++
+ src/server/game/Handlers/CharacterHandler.cpp |  2 +-
+ src/server/shared/SharedDefines.h             | 13 +++++++------
+ 3 files changed, 11 insertions(+), 7 deletions(-)
+
+diff --git a/src/server/game/Entities/Player/Player.cpp b/src/server/game/Entities/Player/Player.cpp
+index 80818758fad0..5c2a1f9cbd82 100644
+--- a/src/server/game/Entities/Player/Player.cpp
++++ b/src/server/game/Entities/Player/Player.cpp
+@@ -12031,6 +12031,9 @@ float Player::GetReputationPriceDiscount(Creature const* creature) const
+ 
+ float Player::GetReputationPriceDiscount(FactionTemplateEntry const* factionTemplate) const
+ {
++    if (HasSpell(69044)) // 69044 = Best Deals Anywhere
++        return 0.8f;
++
+     if (!factionTemplate || !factionTemplate->faction)
+     {
+         return 1.0f;
+diff --git a/src/server/game/Handlers/CharacterHandler.cpp b/src/server/game/Handlers/CharacterHandler.cpp
+index e159441c88a5..9a086c5a1427 100644
+--- a/src/server/game/Handlers/CharacterHandler.cpp
++++ b/src/server/game/Handlers/CharacterHandler.cpp
+@@ -2149,7 +2149,7 @@ void WorldSession::HandleCharFactionOrRaceChangeCallback(std::shared_ptr<Charact
+         trans->Append(stmt);
+ 
+         // Race specific languages
+-        if (factionChangeInfo->Race != RACE_ORC && factionChangeInfo->Race != RACE_HUMAN)
++        if (factionChangeInfo->Race != RACE_ORC && factionChangeInfo->Race != RACE_HUMAN && factionChangeInfo->Race != RACE_WORGEN && factionChangeInfo->Race != RACE_GOBLIN)
+         {
+             stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_CHAR_SKILL_LANGUAGE);
+             stmt->SetData(0, lowGuid);
 diff --git a/src/server/shared/SharedDefines.h b/src/server/shared/SharedDefines.h
-index 6cb96fc..fb3b4f3 100644
+index 584e0c3f854f..a647d586f8f3 100644
 --- a/src/server/shared/SharedDefines.h
 +++ b/src/server/shared/SharedDefines.h
 @@ -75,9 +75,10 @@ enum Races
@@ -31,23 +64,9 @@ index 6cb96fc..fb3b4f3 100644
 +    (1<<(RACE_BLOODELF-1))|(1<<(RACE_DRAENEI-1))      |(1<<(RACE_WORGEN-1)))
  
  #define RACEMASK_ALLIANCE \
--    ((1<<(RACE_HUMAN-1)) | (1<<(RACE_DWARF-1)) | (1<<(RACE_NIGHTELF-1)) | \
+     ((1<<(RACE_HUMAN-1)) | (1<<(RACE_DWARF-1)) | (1<<(RACE_NIGHTELF-1)) | \
 -    (1<<(RACE_GNOME-1)) | (1<<(RACE_DRAENEI-1)))
-+    ((1<<(RACE_HUMAN-1)) | (1<<(RACE_DWARF-1))   | (1<<(RACE_NIGHTELF-1)) | \
 +    (1<<(RACE_GNOME-1)) | (1<<(RACE_DRAENEI-1)) | (1<<(RACE_WORGEN-1)))
  
  #define RACEMASK_HORDE RACEMASK_ALL_PLAYABLE & ~RACEMASK_ALLIANCE
  
-diff --git a/src/server/game/Handlers/CharacterHandler.cpp b/src/server/game/Handlers/CharacterHandler.cpp
-index 171ee44af866..83d647d81560 100644
---- a/src/server/game/Handlers/CharacterHandler.cpp
-+++ b/src/server/game/Handlers/CharacterHandler.cpp
-@@ -2132,7 +2132,7 @@ void WorldSession::HandleCharFactionOrRaceChangeCallback(std::shared_ptr<Charact
-         trans->Append(stmt);
- 
-         // Race specific languages
--        if (factionChangeInfo->Race != RACE_ORC && factionChangeInfo->Race != RACE_HUMAN)
-+        if (factionChangeInfo->Race != RACE_ORC && factionChangeInfo->Race != RACE_HUMAN && factionChangeInfo->Race != RACE_WORGEN && factionChangeInfo->Race != RACE_GOBLIN)
-         {
-             stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_CHAR_SKILL_LANGUAGE);
-             stmt->SetData(0, lowGuid);
