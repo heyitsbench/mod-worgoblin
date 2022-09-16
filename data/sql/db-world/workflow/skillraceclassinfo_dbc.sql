@@ -1,5 +1,5 @@
 INSERT INTO `skillraceclassinfo_dbc` (`ID`, `SkillID`, `RaceMask`, `ClassMask`, `Flags`, `MinLevel`, `SkillTierID`, `SkillCostIndex`) VALUES
-(21, 293, 4095, 3, 128, 40, 0, 0);
+(21, 293, 4095, 3, 128, 40, 0, 0),
 (27, 356, 4095, 1535, 128, 0, 23, 0),
 (28, 182, 4095, 1535, 160, 0, 2, 0),
 (29, 186, 4095, 1535, 160, 0, 2, 0),
