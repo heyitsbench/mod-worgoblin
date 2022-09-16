@@ -29,7 +29,7 @@ INSERT INTO `itemdisplayinfo_dbc` (`ID`, `ModelName_1`, `ModelName_2`, `ModelTex
 (65851, '', '', '', '', 'inv_boots_05', '', 0, 0, 0, 0, 0, 7, 0, 0, '', '', '', '', '', '', 'leather_worgen_b_01grey_boot_ll', 'leather_worgen_b_01grey_Boot_FO', 0, 0),
 (65852, '', '', '', '', 'inv_misc_desecrated_leatherglove', '', 0, 0, 0, 0, 0, 7, 0, 0, '', 'leather_worgen_b_01grey_glove_al', 'leather_worgen_b_01grey_Glove_HA', '', '', '', '', '', 0, 0),
 (65853, '', '', '', '', 'inv_pants_05', '', 0, 0, 0, 0, 0, 7, 0, 0, '', '', '', '', '', 'leather_worgen_b_01grey_pant_lu', 'leather_worgen_b_01grey_Pant_LL', '', 0, 0),
-(6585,, '', '', '', '', 'INV_Chest_Cloth_13', '', 0, 0, 0, 0, 0, 7, 0, 0, '', '', '', 'leather_worgen_b_01grey_chest_tu', 'leather_worgen_b_01grey_Chest_TL', '', '', '', 0, 0),
+(65854, '', '', '', '', 'INV_Chest_Cloth_13', '', 0, 0, 0, 0, 0, 7, 0, 0, '', '', '', 'leather_worgen_b_01grey_chest_tu', 'leather_worgen_b_01grey_Chest_TL', '', '', '', 0, 0),
 (68128, '', '', '', '', 'inv_chest_chain_16', '', 0, 0, 0, 0, 0, 10, 0, 0, 'mail_worgen_b_01black_Sleeve_AU', '', '', 'mail_worgen_b_01black_Chest_TU', 'mail_worgen_b_01black_chest_tl', '', '', '', 0, 0),
 (68129, '', '', '', '', 'inv_belt_16', '', 0, 0, 0, 0, 0, 10, 0, 0, '', '', '', '', '', 'mail_worgen_b_01black_belt_lu', '', '', 0, 0),
 (68130, '', '', '', '', 'inv_pants_03', '', 0, 0, 0, 0, 0, 10, 0, 0, '', '', '', '', '', 'mail_worgen_b_01black_Pant_LU', 'mail_worgen_b_01black_pant_ll', '', 0, 0),
