@@ -1,4 +1,4 @@
-INSERT INTO `skilllineability_dbc` (`ID`, `SkillLine`, `Spell`, `RaceMask`, `ClassMask`, `MinSkillLineRank`, `SupercededBySpell`, `AcquireMethod`, `TrivialSkillLineRankHigh`, `TrivialSkillLineRankLow`, `CharacterPoints_1`, `CharacterPoints_2`, `TradeSkillCategoryID`) VALUES
+INSERT INTO `skilllineability_dbc` (`ID`, `SkillLine`, `Spell`, `RaceMask`, `ClassMask`, `ExcludeRace`, `ExcludeClass`, `MinSkillLineRank`, `SupercededBySpell`, `AcquireMethod`, `TrivialSkillLineRankHigh`, `TrivialSkillLineRankLow`, `CharacterPoints_1`, `CharacterPoints_2`) VALUES
 (590, 98, 668, 3149, 0, 0, 0, 1, 0, 2, 0, 0, 0),
 (592, 109, 669, 946, 0, 0, 0, 1, 0, 2, 0, 0, 0),
 (3269, 237, 3565, 3149, 128, 0, 0, 1, 0, 0, 0, 0, 0),
