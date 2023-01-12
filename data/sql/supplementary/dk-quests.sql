@@ -20,8 +20,8 @@ INSERT INTO `creature_template` (`entry`, `difficulty_entry_1`, `difficulty_entr
 
 DELETE FROM `creature` WHERE `id1` IN (49355, 49356);
 INSERT INTO `creature` (`guid`, `id1`, `id2`, `id3`, `map`, `zoneId`, `areaId`, `spawnMask`, `phaseMask`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `wander_distance`, `currentwaypoint`, `curhealth`, `curmana`, `MovementType`, `npcflag`, `unit_flags`, `dynamicflags`, `ScriptName`, `VerifiedBuild`) VALUES
-(493550, 49355, 0, 0, 609, 0, 0, 1, 4, 0, 1320.97, -5740.96, 137.555, 5.49779, 360, 0, 0, 10, 0, 0, 0, 0, 0, '', 0),
-(493551, 49356, 0, 0, 609, 0, 0, 1, 4, 0, 1320.97, -5740.96, 137.555, 5.49779, 360, 0, 0, 10, 0, 0, 0, 0, 0, '', 0);
+(493550, 49355, 0, 0, 609, 0, 0, 1, 4, 0, 1332.07, -5760.21, 137.736, 3.08923, 360, 0, 0, 10, 0, 0, 0, 0, 0, '', 0),
+(493551, 49356, 0, 0, 609, 0, 0, 1, 4, 0, 1321.47, -5759.29, 137.717, 0.15708, 360, 0, 0, 10, 0, 0, 0, 0, 0, '', 0);
 
 DELETE FROM `creature_addon` WHERE `guid` IN (493550, 493551);
 INSERT INTO `creature_addon` (`guid`, `path_id`, `mount`, `bytes1`, `bytes2`, `emote`, `visibilityDistanceType`, `auras`) VALUES
