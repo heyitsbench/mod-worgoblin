@@ -198,15 +198,17 @@ INSERT INTO `playercreateinfo_skills` (`raceMask`, `classMask`, `skill`, `rank`,
 DELETE FROM `spell_script_names` WHERE `spell_id` = 69041;
 INSERT INTO `spell_script_names` (`spell_id`, `ScriptName`) VALUES (69041, 'spell_rocket_barrage');
 
-DELETE FROM `creature_model_info` WHERE `DisplayID` IN (33000, 33001, 32385, 39095, 39096, 35249, 35250);
+DELETE FROM `creature_model_info` WHERE `DisplayID` IN (33000, 33001, 32385, 35249, 35250, 36445, 36446, 39095, 39096);
 INSERT INTO `creature_model_info` (`DisplayID`, `BoundingRadius`, `CombatReach`, `Gender`, `DisplayID_Other_Gender`) VALUES
 (29422, 0.406, 1.5, 0, 0), -- Worgen
 (29423, 0.406, 1.5, 1, 0), -- Worgenette
 (32385, 0.2325, 1.5, 0, 0), -- Gobber
+(35249, 0.35, 1.5, 2, 0), -- Trike
+(35250, 0.35, 1.5, 2, 0), -- Quik-trike
+(36445, 0.406, 1.5, 0, 0), -- Lord Harford
+(36446, 0.306, 1.5, 0, 0), -- Gally Lumpstain
 (39095, 1, 1.5, 2, 0), -- Horse
 (39096, 1, 1.5, 2, 0), -- Quik-horse
-(35249, 0.35, 1.5, 2, 0), -- Trike
-(35250, 0.35, 1.5, 2, 0); -- Quik-trike
 
 DELETE FROM `creature_template` WHERE `entry` IN (36613, 46754, 46755, 55272, 55273);
 INSERT INTO `creature_template` (`entry`, `difficulty_entry_1`, `difficulty_entry_2`, `difficulty_entry_3`, `KillCredit1`, `KillCredit2`, `modelid1`, `modelid2`, `modelid3`, `modelid4`, `name`, `subname`, `IconName`, `gossip_menu_id`, `minlevel`, `maxlevel`, `exp`, `faction`, `npcflag`, `speed_walk`, `speed_run`, `speed_swim`, `speed_flight`, `detection_range`, `scale`, `rank`, `dmgschool`, `DamageModifier`, `BaseAttackTime`, `RangeAttackTime`, `BaseVariance`, `RangeVariance`, `unit_class`, `unit_flags`, `unit_flags2`, `dynamicflags`, `family`, `trainer_type`, `trainer_spell`, `trainer_class`, `trainer_race`, `type`, `type_flags`, `lootid`, `pickpocketloot`, `skinloot`, `PetSpellDataId`, `VehicleId`, `mingold`, `maxgold`, `AIName`, `MovementType`, `HoverHeight`, `HealthModifier`, `ManaModifier`, `ArmorModifier`, `ExperienceModifier`, `RacialLeader`, `movementId`, `RegenHealth`, `mechanic_immune_mask`, `spell_school_immune_mask`, `flags_extra`, `ScriptName`, `VerifiedBuild`) VALUES
