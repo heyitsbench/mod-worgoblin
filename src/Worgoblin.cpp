@@ -19,38 +19,27 @@ public:
     }
 };
 
-class rocket_barrage : public SpellScriptLoader //ID=69041
+class spell_rocket_barrage : public SpellScript
 {
-public:
-    rocket_barrage() : SpellScriptLoader("spell_rocket_barrage") { }
+    PrepareSpellScript(rocket_barrage_script);
 
-    class rocket_barrage_script : public SpellScript
+    void HandleDamage(SpellEffIndex /*effIndex*/)
     {
-        PrepareSpellScript(rocket_barrage_script);
+        Unit* caster = GetCaster();
+        int32 basePoints = 0 + caster->getLevel() * 2;
+        basePoints += caster->SpellBaseDamageBonusDone(GetSpellInfo()->GetSchoolMask()) * 0.429; //BM=0.429 here, don't ask me how.
+        basePoints += caster->GetTotalAttackPowerValue(caster->getClass() != CLASS_HUNTER ? BASE_ATTACK : RANGED_ATTACK) * 0.25; // 0.25=BonusCoefficient, hardcoding it here
+        SetEffectValue(basePoints);
+    }
 
-        void HandleDamage(SpellEffIndex /*effIndex*/)
-        {
-            Unit* caster = GetCaster();
-            int32 basePoints = 0 + caster->getLevel() * 2;
-            basePoints += caster->SpellBaseDamageBonusDone(GetSpellInfo()->GetSchoolMask()) * 0.429; //BM=0.429 here, don't ask me how.
-            basePoints += caster->GetTotalAttackPowerValue(caster->getClass() != CLASS_HUNTER ? BASE_ATTACK : RANGED_ATTACK) * 0.25; // 0.25=BonusCoefficient, hardcoding it here
-            SetEffectValue(basePoints);
-        }
-
-        void Register() override
-        {
-            OnEffectLaunchTarget += SpellEffectFn(rocket_barrage_script::HandleDamage, EFFECT_0, SPELL_EFFECT_SCHOOL_DAMAGE);
-        }
-    };
-
-    SpellScript* GetSpellScript() const override
+    void Register() override
     {
-        return new rocket_barrage_script;
+        OnEffectLaunchTarget += SpellEffectFn(spell_rocket_barrage::HandleDamage, EFFECT_0, SPELL_EFFECT_SCHOOL_DAMAGE);
     }
 };
 
 void Add_Worgoblin()
 {
     new announce();
-    new rocket_barrage();
+    RegisterSpellScript(spell_rocket_barrage());
 }
