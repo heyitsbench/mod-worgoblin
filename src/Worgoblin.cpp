@@ -21,7 +21,7 @@ public:
 
 class spell_rocket_barrage : public SpellScript
 {
-    PrepareSpellScript(rocket_barrage_script);
+    PrepareSpellScript(spell_rocket_barrage);
 
     void HandleDamage(SpellEffIndex /*effIndex*/)
     {
@@ -41,5 +41,5 @@ class spell_rocket_barrage : public SpellScript
 void Add_Worgoblin()
 {
     new announce();
-    RegisterSpellScript(spell_rocket_barrage());
+    RegisterSpellScript(spell_rocket_barrage);
 }
