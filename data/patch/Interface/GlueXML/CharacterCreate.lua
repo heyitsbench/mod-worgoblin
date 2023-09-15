@@ -49,11 +49,11 @@ RACE_ICON_TCOORDS = {
 	["DRAENEI_MALE"]	= {0.5, 0.625, 0, 0.25},
 	["DRAENEI_FEMALE"]	= {0.5, 0.625, 0.5, 0.75},
 
-   	["GOBLIN_MALE"]     	= {0.625, 0.750, 0.25, 0.5},
-   	["GOBLIN_FEMALE"]   	= {0.625, 0.750, 0.75, 1.0},
+	["GOBLIN_MALE"]     	= {0.625, 0.750, 0.25, 0.5},
+	["GOBLIN_FEMALE"]   	= {0.625, 0.750, 0.75, 1.0},
 
-   	["WORGEN_MALE"]     	= {0.625, 0.750, 0, 0.25},
-   	["WORGEN_FEMALE"]   	= {0.625, 0.750, 0.5, 0.75},
+	["WORGEN_MALE"]     	= {0.625, 0.750, 0, 0.25},
+	["WORGEN_FEMALE"]   	= {0.625, 0.750, 0.5, 0.75},
 };
 CLASS_ICON_TCOORDS = {
 	["WARRIOR"]	= {0, 0.25, 0, 0.25},
@@ -561,4 +561,3 @@ function CharacterChangeFixup()
 		end
 	end
 end
-
