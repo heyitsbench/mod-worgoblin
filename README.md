@@ -1,4 +1,10 @@
-# This is no longer being maintained.
+# Updates
+
+2023-09-13 - @ben-of-codecraft
+* Updated multiple files in DBCs to make this patch compatible with HD Patch. 
+* This patch must load post the HD patch, and patches load Z>A 9-1 (with 1-3 as expansion patches) This means if your HD Patch is A, then this patch has to be B-Z. Other than that follow the 
+instructions form the original patch below. 
+
 
 # Worgoblin Module
 
