@@ -1,11 +1,3 @@
-# Updates
-
-2023-09-13 - @ben-of-codecraft
-* Updated multiple files in DBCs to make this patch compatible with HD Patch. 
-* This patch must load post the HD patch, and patches load Z>A 9-1 (with 1-3 as expansion patches) This means if your HD Patch is A, then this patch has to be B-Z. Other than that follow the 
-instructions form the original patch below. 
-
-
 # Worgoblin Module
 
 [![core-build](https://github.com/benjymansy123/mod-worgoblin/actions/workflows/core-build.yml/badge.svg)](https://github.com/benjymansy123/mod-worgoblin/actions/workflows/core-build.yml)
@@ -32,9 +24,18 @@ Or you can do it manually through a text editor of your choice by changing the l
 
 Upon downloading the repo, you'll have the patch-contents file available to you. Copy all the contents of the DBFilesClient folder to your AzerothCore Data directory. Feel free to make a backup of the DBCs you'll be replacing, as backups never hurt.
 
+If you have added existing custom content (Spells, Items, SkillLines..etc) to any of the DBC files listed in patch, you will want to merge and DBC file conflicts that happen.  There are multiple paths of doing this easiest likely being using DBXeditor with import on any conflicting files.
+
 ### 3) Compile and install AzerothCore.
 
-### 4) Move the [patch-contents](https://github.com/benjymansy123/mod-worgoblin/tree/master/patch-contents) folder to your Data folder in your WoW client and rename the folder to `patch-A.MPQ`.
+### 4) **Non-HD** : Move the [patch-contents](https://github.com/benjymansy123/mod-worgoblin/tree/master/patch-contents) folder to your Data folder in your WoW client and rename the folder to `patch-A.MPQ`.
+
+> [!IMPORTANT]
+> If you are running a patched HD Client support use the following instructions instead or you will have game crashes.
+
+1. Install the client file [patch-K.MPQ](https://github.com/heyitsbench/data/ patch-hd/) in to your WoW Client folder C:/(path to World of Warcraft)/Data/
+2. Copy the files in patch-hd/DBFilesClient onto your server DBC location similar to NonHD version.
+3. The character creation pages also are updated with a more modern look to incorporate the 2 new races.
 
 ### 5) Remove signature checks from your WoW executable.
 I recommend Windows users to use [this patcher](https://model-changing.net/index.php?app=downloads&module=downloads&controller=view&id=314&tab=details) created by kebabstorm to patch your Wow.exe file. I recommend macOS users to download this [pre-patched .app file](https://github.com/benjymansy123/custom-race-ac-12_6_21/releases/download/sig-check/WoW.app.zip), since no easy patcher exists for macOS.
