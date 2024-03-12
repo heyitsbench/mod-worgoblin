@@ -1,0 +1,26 @@
+{
+    "Lua.diagnostics.globals": [
+        "AddonTooltip",
+        "AddonList",
+        "DISABLE_ADDONS",
+        "OKAY",
+        "CANCEL",
+        "ALL",
+        "AddonDialogButton1",
+        "AddonDialogBackground",
+        "AddonCharacterDropDown",
+        "ADDON_DEPENDENCIES",
+        "AddonDialogText",
+        "AddonDialogButton2",
+        "ENABLED_FOR_SOME",
+        "enabled",
+        "message",
+        "LocalizeFrames",
+        "DAYS_ABBR",
+        "HOURS_ABBR",
+        "MINUTES_ABBR",
+        "SECONDS_ABBR",
+        "MALE",
+        "FEMALE"
+    ]
+}
