@@ -26,6 +26,8 @@ Upon downloading the repo, you'll have the patch-contents file available to you.
 
 If you have added existing custom content (Spells, Items, SkillLines..etc) to any of the DBC files listed in patch, you will want to merge and DBC file conflicts that happen.  There are multiple paths of doing this easiest likely being using DBXeditor with import on any conflicting files.
 
+If you have added existing custom content (Spells, Items, SkillLines..etc) to any of the DBC files listed in patch, you will want to merge and DBC file conflicts that happen.  There are multiple paths of doing this easiest likely being using DBXeditor with import on any conflicting files.
+
 ### 3) Compile and install AzerothCore.
 
 ### 4) **Non-HD** : Move the [patch-contents](https://github.com/benjymansy123/mod-worgoblin/tree/master/patch-contents) folder to your Data folder in your WoW client and rename the folder to `patch-A.MPQ`.
@@ -33,7 +35,7 @@ If you have added existing custom content (Spells, Items, SkillLines..etc) to an
 > [!IMPORTANT]
 > If you are running a patched HD Client support use the following instructions instead or you will have game crashes.
 
-1. Install the client file [patch-K.MPQ](https://github.com/heyitsbench/data/ patch-hd/) in to your WoW Client folder C:/(path to World of Warcraft)/Data/
+1. Install the client file [patch-K.MPQ](https://github.com/araxiaonline/wow-client-patches/) in to your WoW Client folder C:/(path to World of Warcraft)/Data/
 2. Copy the files in patch-hd/DBFilesClient onto your server DBC location similar to NonHD version.
 3. The character creation pages also are updated with a more modern look to incorporate the 2 new races.
 
