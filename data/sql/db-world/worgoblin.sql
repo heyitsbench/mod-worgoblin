@@ -87,6 +87,62 @@ INSERT INTO `item_template` (`entry`, `class`, `subclass`, `SoundOverrideSubclas
 (49521, 4, 1, -1, 'Goblin Acolyte\'s Pants', 62621, 1, 0, 0, 1, 0, 1, 7, -1, -1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11, 0, 0, 0, 0, 0, 0, 1000, 0, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, '', 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 40, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, '', 0, 0, 0, 0, 0, 0),
 (49522, 4, 1, -1, 'Goblin Acolyte\'s Shoes', 4143, 1, 0, 0, 1, 0, 1, 8, -1, -1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 1000, 0, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, '', 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 25, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, '', 0, 0, 0, 0, 0, 0);
 
+INSERT INTO `playercreateinfo_skills` (`raceMask`, `classMask`, `skill`, `rank`, `comment`) VALUES
+(2048, 8, 44, 0, 'Axes - Worgen'), -- Yes, these are hackfixes and I'm very mad about it,
+(256, 8, 54, 0, 'Maces - Goblin'), -- But right now I don't see any other way to add these.
+(2048, 0, 789, 0, 'Worgen - Racial'), -- And unfortunately, I really want worgen and goblins
+(256, 0, 790, 0, 'Goblin - Racial'); -- To have their starting gear from cata, and the rogues have funky weapons.
+
+DELETE FROM `spell_script_names` WHERE `spell_id` = 69041;
+INSERT INTO `spell_script_names` (`spell_id`, `ScriptName`) VALUES (69041, 'spell_rocket_barrage');
+
+DELETE FROM `creature_model_info` WHERE `DisplayID` IN (29422, 29423, 33000, 33001, 32385, 35249, 35250, 36445, 36446, 39095, 39096);
+INSERT INTO `creature_model_info` (`DisplayID`, `BoundingRadius`, `CombatReach`, `Gender`, `DisplayID_Other_Gender`) VALUES
+(29422, 0.406, 1.5, 0, 0), -- Worgen
+(29423, 0.406, 1.5, 1, 0), -- Worgenette
+(32385, 0.2325, 1.5, 0, 0), -- Gobber
+(35249, 0.35, 1.5, 2, 0), -- Trike
+(35250, 0.35, 1.5, 2, 0), -- Quik-trike
+(36445, 0.406, 1.5, 0, 0), -- Lord Harford
+(36446, 0.306, 1.5, 0, 0), -- Gally Lumpstain
+(39095, 1, 1.5, 2, 0), -- Horse
+(39096, 1, 1.5, 2, 0); -- Quik-horse
+
+DELETE FROM `creature_template` WHERE `entry` IN (36613, 46754, 46755, 55272, 55273);
+INSERT INTO `creature_template` (`entry`, `difficulty_entry_1`, `difficulty_entry_2`, `difficulty_entry_3`, `KillCredit1`, `KillCredit2`, `name`, `subname`, `IconName`, `gossip_menu_id`, `minlevel`, `maxlevel`, `exp`, `faction`, `npcflag`, `speed_walk`, `speed_run`, `speed_swim`, `speed_flight`, `detection_range`, `scale`, `rank`, `dmgschool`, `DamageModifier`, `BaseAttackTime`, `RangeAttackTime`, `BaseVariance`, `RangeVariance`, `unit_class`, `unit_flags`, `unit_flags2`, `dynamicflags`, `family`, `trainer_type`, `trainer_spell`, `trainer_class`, `trainer_race`, `type`, `type_flags`, `lootid`, `pickpocketloot`, `skinloot`, `PetSpellDataId`, `VehicleId`, `mingold`, `maxgold`, `AIName`, `MovementType`, `HoverHeight`, `HealthModifier`, `ManaModifier`, `ArmorModifier`, `ExperienceModifier`, `RacialLeader`, `movementId`, `RegenHealth`, `mechanic_immune_mask`, `spell_school_immune_mask`, `flags_extra`, `ScriptName`, `VerifiedBuild`) VALUES
+(36613, 0, 0, 0, 0, 0, 'Gobber', '', NULL, 0, 55, 55, 0, 120, 131072, 1, 1.14286, 1, 1, 18, 1, 0, 0, 1, 2000, 2000, 1, 1, 1, 512, 2048, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, '', 0, 1, 3, 1, 1, 1, 0, 0, 1, 0, 0, 2, '', 12340),
+(46754, 0, 0, 0, 0, 0, 'Goblin Trike', NULL, NULL, 0, 20, 20, 0, 35, 0, 1, 1.38571, 1, 1, 20, 1, 0, 0, 1, 2000, 2000, 1, 1, 1, 33554432, 2048, 0, 0, 0, 0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, '', 0, 1, 1, 1, 1, 1, 0, 140, 1, 0, 0, 0, '', 0),
+(46755, 0, 0, 0, 0, 0, 'Goblin Turbo-Trike', NULL, NULL, 0, 40, 40, 0, 35, 0, 1, 1.38571, 1, 1, 20, 1, 0, 0, 1, 2000, 2000, 1, 1, 1, 33554432, 2048, 0, 0, 0, 0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, '', 0, 1, 1, 1, 1, 1, 0, 140, 1, 0, 0, 0, '', 0),
+(55272, 0, 0, 0, 0, 0, 'Mountain Horse', NULL, NULL, 0, 20, 20, 0, 35, 0, 1, 1.38571, 1, 1, 20, 1, 0, 0, 1, 2000, 2000, 1, 1, 1, 0, 2048, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 0, 1, 1, 1, 1, 1, 0, 140, 1, 0, 0, 0, '', 0),
+(55273, 0, 0, 0, 0, 0, 'Swift Mountain Horse', NULL, NULL, 0, 40, 40, 0, 35, 0, 1, 1.38571, 1, 1, 20, 1, 0, 0, 1, 2000, 2000, 1, 1, 1, 0, 2048, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 0, 1, 1, 1, 1, 1, 0, 140, 1, 0, 0, 0, '', 0);
+
+DELETE FROM `creature_template_model` WHERE `CreatureID` IN (36613, 46754, 46755, 55272, 55273);
+
+INSERT INTO `creature_template_model` (`CreatureID`, `Idx`, `CreatureDisplayID`, `DisplayScale`, `Probability`, `VerifiedBuild`) VALUES
+	(36613, 0, 32385, 1, 1, 12340),
+	(46754, 0, 35249, 1, 1, 12340),
+	(46755, 0, 35250, 1, 1, 12340),
+    (55272, 0, 39096, 1, 1, 12340),
+	(55273, 0, 39095, 1, 1, 12340);
+
+DELETE FROM `achievement_criteria_data` WHERE `criteria_id` IN (13473, 13474, 13475, 13476, 13477, 13478);
+INSERT INTO `achievement_criteria_data` (`criteria_id`, `type`, `value1`, `value2`, `ScriptName`) VALUES
+(13473, 2, 0, 9, ''), -- Achievement 2422 (Shake Your Bunny-Maker)
+(13473, 9, 18, 0, ''),
+(13473, 10, 1, 0, ''),
+(13474, 2, 0, 12, ''),
+(13474, 9, 18, 0, ''),
+(13474, 10, 1, 0, ''),
+(13475, 2, 0, 9, ''), -- Achievement 291 (Check Your Head)
+(13476, 2, 0, 12, ''),
+(13477, 21, 0, 9, ''), -- Achievement 1429 (Realm First! Level 80 Goblin)
+(13478, 21, 0, 12, ''); -- Achievement 1430 (Realm First! Level 80 Worgen)
+
+UPDATE quest_template SET AllowableRaces = AllowableRaces|256 WHERE AllowableRaces & 2 AND AllowableRaces != -1 AND AllowableRaces != 2147483647 AND AllowableRaces != 2047 AND AllowableRaces != 4095 AND AllowableRaces != 8191 AND AllowableRaces != 16383 AND AllowableRaces != 32767 AND AllowableRaces != 65535 AND AllowableRaces != 131071 AND AllowableRaces != 262143 AND AllowableRaces != 524287 AND AllowableRaces != 1048575 AND AllowableRaces != 2097151;
+UPDATE quest_template SET AllowableRaces = AllowableRaces|2048 WHERE AllowableRaces & 1 AND AllowableRaces != -1 AND AllowableRaces != 2147483647 AND AllowableRaces != 2047 AND AllowableRaces != 4095 AND AllowableRaces != 8191 AND AllowableRaces != 16383 AND AllowableRaces != 32767 AND AllowableRaces != 65535 AND AllowableRaces != 131071 AND AllowableRaces != 262143 AND AllowableRaces != 524287 AND AllowableRaces != 1048575 AND AllowableRaces != 2097151;
+UPDATE quest_template SET AllowableRaces = 1 WHERE ID = 12742;
+UPDATE quest_template SET AllowableRaces = 2 WHERE ID = 12748;
+
 DELETE FROM `playercreateinfo_action` WHERE `race` = 9 OR `race` = 12;
 INSERT INTO `playercreateinfo_action` (`race`, `class`, `button`, `action`) VALUES
 (9, 1, 72, 6603),
@@ -182,56 +238,10 @@ INSERT INTO `playercreateinfo_action` (`race`, `class`, `button`, `action`) VALU
 (12, 11, 96, 6603);
 -- (12, 11, 120, 68992), Darkflight Druid
 -- (12, 11, 120, 68996), Two Forms Druid
--- (12, 11, 120, 87840), Running Wild Druid
+-- (12, 11, 120, 87840) Running Wild Druid
 
 UPDATE `playercreateinfo_skills` SET `racemask` = `racemask`|256|2048 WHERE `skill` = 46; -- Guns
 UPDATE `playercreateinfo_skills` SET `racemask` = `racemask`|256|2048 WHERE `skill` = 173; -- Daggers
 UPDATE `playercreateinfo_skills` SET `racemask` = `racemask`|256 WHERE `skill` = 160; -- 2h-mace goblins
 UPDATE `playercreateinfo_skills` SET `racemask` = `racemask`|256 WHERE `skill` = 109; -- Orcish language goblins
 UPDATE `playercreateinfo_skills` SET `racemask` = `racemask`|2048 WHERE `skill` = 98; -- Common language worgen
-INSERT INTO `playercreateinfo_skills` (`raceMask`, `classMask`, `skill`, `rank`, `comment`) VALUES
-(2048, 8, 44, 0, 'Axes - Worgen'), -- Yes, these are hackfixes and I'm very mad about it,
-(256, 8, 54, 0, 'Maces - Goblin'), -- But right now I don't see any other way to add these.
-(2048, 0, 789, 0, 'Worgen - Racial'), -- And unfortunately, I really want worgen and goblins
-(256, 0, 790, 0, 'Goblin - Racial'); -- To have their starting gear from cata, and the rogues have funky weapons.
-
-DELETE FROM `spell_script_names` WHERE `spell_id` = 69041;
-INSERT INTO `spell_script_names` (`spell_id`, `ScriptName`) VALUES (69041, 'spell_rocket_barrage');
-
-DELETE FROM `creature_model_info` WHERE `DisplayID` IN (33000, 33001, 32385, 35249, 35250, 36445, 36446, 39095, 39096);
-INSERT INTO `creature_model_info` (`DisplayID`, `BoundingRadius`, `CombatReach`, `Gender`, `DisplayID_Other_Gender`) VALUES
-(29422, 0.406, 1.5, 0, 0), -- Worgen
-(29423, 0.406, 1.5, 1, 0), -- Worgenette
-(32385, 0.2325, 1.5, 0, 0), -- Gobber
-(35249, 0.35, 1.5, 2, 0), -- Trike
-(35250, 0.35, 1.5, 2, 0), -- Quik-trike
-(36445, 0.406, 1.5, 0, 0), -- Lord Harford
-(36446, 0.306, 1.5, 0, 0), -- Gally Lumpstain
-(39095, 1, 1.5, 2, 0), -- Horse
-(39096, 1, 1.5, 2, 0); -- Quik-horse
-
-DELETE FROM `creature_template` WHERE `entry` IN (36613, 46754, 46755, 55272, 55273);
-INSERT INTO `creature_template` (`entry`, `difficulty_entry_1`, `difficulty_entry_2`, `difficulty_entry_3`, `KillCredit1`, `KillCredit2`, `modelid1`, `modelid2`, `modelid3`, `modelid4`, `name`, `subname`, `IconName`, `gossip_menu_id`, `minlevel`, `maxlevel`, `exp`, `faction`, `npcflag`, `speed_walk`, `speed_run`, `speed_swim`, `speed_flight`, `detection_range`, `scale`, `rank`, `dmgschool`, `DamageModifier`, `BaseAttackTime`, `RangeAttackTime`, `BaseVariance`, `RangeVariance`, `unit_class`, `unit_flags`, `unit_flags2`, `dynamicflags`, `family`, `trainer_type`, `trainer_spell`, `trainer_class`, `trainer_race`, `type`, `type_flags`, `lootid`, `pickpocketloot`, `skinloot`, `PetSpellDataId`, `VehicleId`, `mingold`, `maxgold`, `AIName`, `MovementType`, `HoverHeight`, `HealthModifier`, `ManaModifier`, `ArmorModifier`, `ExperienceModifier`, `RacialLeader`, `movementId`, `RegenHealth`, `mechanic_immune_mask`, `spell_school_immune_mask`, `flags_extra`, `ScriptName`, `VerifiedBuild`) VALUES
-(36613, 0, 0, 0, 0, 0, 32385, 0, 0, 0, 'Gobber', '', NULL, 0, 55, 55, 0, 120, 131072, 1, 1.14286, 1, 1, 18, 1, 0, 0, 1, 2000, 2000, 1, 1, 1, 512, 2048, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, '', 0, 1, 3, 1, 1, 1, 0, 0, 1, 0, 0, 2, '', 12340),
-(46754, 0, 0, 0, 0, 0, 35249, 0, 0, 0, 'Goblin Trike', NULL, NULL, 0, 20, 20, 0, 35, 0, 1, 1.38571, 1, 1, 20, 1, 0, 0, 1, 2000, 2000, 1, 1, 1, 33554432, 2048, 0, 0, 0, 0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, '', 0, 1, 1, 1, 1, 1, 0, 140, 1, 0, 0, 0, '', 0),
-(46755, 0, 0, 0, 0, 0, 35250, 0, 0, 0, 'Goblin Turbo-Trike', NULL, NULL, 0, 40, 40, 0, 35, 0, 1, 1.38571, 1, 1, 20, 1, 0, 0, 1, 2000, 2000, 1, 1, 1, 33554432, 2048, 0, 0, 0, 0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, '', 0, 1, 1, 1, 1, 1, 0, 140, 1, 0, 0, 0, '', 0),
-(55272, 0, 0, 0, 0, 0, 39096, 0, 0, 0, 'Mountain Horse', NULL, NULL, 0, 20, 20, 0, 35, 0, 1, 1.38571, 1, 1, 20, 1, 0, 0, 1, 2000, 2000, 1, 1, 1, 0, 2048, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 0, 1, 1, 1, 1, 1, 0, 140, 1, 0, 0, 0, '', 0),
-(55273, 0, 0, 0, 0, 0, 39095, 0, 0, 0, 'Swift Mountain Horse', NULL, NULL, 0, 40, 40, 0, 35, 0, 1, 1.38571, 1, 1, 20, 1, 0, 0, 1, 2000, 2000, 1, 1, 1, 0, 2048, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 0, 1, 1, 1, 1, 1, 0, 140, 1, 0, 0, 0, '', 0);
-
-DELETE FROM `achievement_criteria_data` WHERE `criteria_id` IN (13473, 13474, 13475, 13476, 13477, 13478);
-INSERT INTO `achievement_criteria_data` (`criteria_id`, `type`, `value1`, `value2`, `ScriptName`) VALUES
-(13473, 2, 0, 9, ''), -- Achievement 2422 (Shake Your Bunny-Maker)
-(13473, 9, 18, 0, ''),
-(13473, 10, 1, 0, ''),
-(13474, 2, 0, 12, ''),
-(13474, 9, 18, 0, ''),
-(13474, 10, 1, 0, ''),
-(13475, 2, 0, 9, ''), -- Achievement 291 (Check Your Head)
-(13476, 2, 0, 12, ''),
-(13477, 21, 0, 9, ''), -- Achievement 1429 (Realm First! Level 80 Goblin)
-(13478, 21, 0, 12, ''); -- Achievement 1430 (Realm First! Level 80 Worgen)
-
-UPDATE quest_template SET AllowableRaces = AllowableRaces|256 WHERE AllowableRaces & 2 AND AllowableRaces != -1 AND AllowableRaces != 2147483647 AND AllowableRaces != 2047 AND AllowableRaces != 4095 AND AllowableRaces != 8191 AND AllowableRaces != 16383 AND AllowableRaces != 32767 AND AllowableRaces != 65535 AND AllowableRaces != 131071 AND AllowableRaces != 262143 AND AllowableRaces != 524287 AND AllowableRaces != 1048575 AND AllowableRaces != 2097151;
-UPDATE quest_template SET AllowableRaces = AllowableRaces|2048 WHERE AllowableRaces & 1 AND AllowableRaces != -1 AND AllowableRaces != 2147483647 AND AllowableRaces != 2047 AND AllowableRaces != 4095 AND AllowableRaces != 8191 AND AllowableRaces != 16383 AND AllowableRaces != 32767 AND AllowableRaces != 65535 AND AllowableRaces != 131071 AND AllowableRaces != 262143 AND AllowableRaces != 524287 AND AllowableRaces != 1048575 AND AllowableRaces != 2097151;
-UPDATE quest_template SET AllowableRaces = 1 WHERE ID = 12742;
-UPDATE quest_template SET AllowableRaces = 2 WHERE ID = 12748;
