@@ -26,7 +26,7 @@ class spell_rocket_barrage : public SpellScript
     void HandleDamage(SpellEffIndex /*effIndex*/)
     {
         Unit* caster = GetCaster();
-        int32 basePoints = 0 + caster->getLevel() * 2;
+        int32 basePoints = 0 + caster->GetLevel() * 2;
         basePoints += caster->SpellBaseDamageBonusDone(GetSpellInfo()->GetSchoolMask()) * 0.429; //BM=0.429 here, don't ask me how.
         basePoints += caster->GetTotalAttackPowerValue(caster->getClass() != CLASS_HUNTER ? BASE_ATTACK : RANGED_ATTACK) * 0.25; // 0.25=BonusCoefficient, hardcoding it here
         SetEffectValue(basePoints);
