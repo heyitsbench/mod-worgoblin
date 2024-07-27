@@ -1,28 +1,21 @@
----
- src/server/game/Entities/Player/Player.cpp    |  3 +++
- src/server/game/Handlers/CharacterHandler.cpp |  2 +-
- src/server/shared/SharedDefines.h             | 13 +++++++------
- 3 files changed, 11 insertions(+), 7 deletions(-)
-
 diff --git a/src/server/game/Entities/Player/Player.cpp b/src/server/game/Entities/Player/Player.cpp
-index 80818758fad0..5c2a1f9cbd82 100644
+index 0b643923b..18de7dce6 100644
 --- a/src/server/game/Entities/Player/Player.cpp
 +++ b/src/server/game/Entities/Player/Player.cpp
-@@ -12031,6 +12031,9 @@ float Player::GetReputationPriceDiscount(Creature const* creature) const
+@@ -12293,6 +12293,8 @@ float Player::GetReputationPriceDiscount(Creature const* creature) const
  
  float Player::GetReputationPriceDiscount(FactionTemplateEntry const* factionTemplate) const
  {
 +    if (HasSpell(69044)) // 69044 = Best Deals Anywhere
 +        return 0.8f;
-+
      if (!factionTemplate || !factionTemplate->faction)
      {
          return 1.0f;
 diff --git a/src/server/game/Handlers/CharacterHandler.cpp b/src/server/game/Handlers/CharacterHandler.cpp
-index e159441c88a5..9a086c5a1427 100644
+index 6c503243c..77136f8b1 100644
 --- a/src/server/game/Handlers/CharacterHandler.cpp
 +++ b/src/server/game/Handlers/CharacterHandler.cpp
-@@ -2149,7 +2149,7 @@ void WorldSession::HandleCharFactionOrRaceChangeCallback(std::shared_ptr<Charact
+@@ -2144,7 +2144,7 @@ void WorldSession::HandleCharFactionOrRaceChangeCallback(std::shared_ptr<Charact
          trans->Append(stmt);
  
          // Race specific languages
@@ -32,15 +25,15 @@ index e159441c88a5..9a086c5a1427 100644
              stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_CHAR_SKILL_LANGUAGE);
              stmt->SetData(0, lowGuid);
 diff --git a/src/server/shared/SharedDefines.h b/src/server/shared/SharedDefines.h
-index 584e0c3f854f..a647d586f8f3 100644
+index 1b0568fe6..8be349630 100644
 --- a/src/server/shared/SharedDefines.h
 +++ b/src/server/shared/SharedDefines.h
-@@ -75,9 +75,10 @@ enum Races
+@@ -76,9 +76,10 @@ enum Races
      RACE_TAUREN             = 6,  // TITLE Tauren
      RACE_GNOME              = 7,  // TITLE Gnome
      RACE_TROLL              = 8,  // TITLE Troll
 -    //RACE_GOBLIN             = 9,
-+    RACE_GOBLIN             = 9,  // TITLE Goblin
++    RACE_GOBLIN             = 9, // TITLE Blood Elf
      RACE_BLOODELF           = 10, // TITLE Blood Elf
 -    RACE_DRAENEI            = 11 //, TITLE Draenei
 +    RACE_DRAENEI            = 11, // TITLE Draenei
@@ -48,7 +41,7 @@ index 584e0c3f854f..a647d586f8f3 100644
      //RACE_FEL_ORC        = 12,
      //RACE_NAGA           = 13,
      //RACE_BROKEN         = 14,
-@@ -91,17 +92,17 @@ enum Races
+@@ -92,17 +93,17 @@ enum Races
  };
  
  // max+1 for player race
