@@ -1,18 +1,25 @@
+---
+ src/server/game/Entities/Player/Player.cpp    |  3 +++
+ src/server/game/Handlers/CharacterHandler.cpp |  2 +-
+ src/server/shared/SharedDefines.h             | 13 +++++++------
+ 3 files changed, 11 insertions(+), 7 deletions(-)
+
 diff --git a/src/server/game/Entities/Player/Player.cpp b/src/server/game/Entities/Player/Player.cpp
-index 0b643923b..18de7dce6 100644
+index 0b643923b36d48..d49e22ff19a5c6 100644
 --- a/src/server/game/Entities/Player/Player.cpp
 +++ b/src/server/game/Entities/Player/Player.cpp
-@@ -12293,6 +12293,8 @@ float Player::GetReputationPriceDiscount(Creature const* creature) const
+@@ -12293,6 +12293,9 @@ float Player::GetReputationPriceDiscount(Creature const* creature) const
  
  float Player::GetReputationPriceDiscount(FactionTemplateEntry const* factionTemplate) const
  {
-+    if (HasSpell(69044)) // 69044 = Best Deals Anywhere
++    if (HasSpell(69044)) // Best Deals Anywhere
 +        return 0.8f;
++
      if (!factionTemplate || !factionTemplate->faction)
      {
          return 1.0f;
 diff --git a/src/server/game/Handlers/CharacterHandler.cpp b/src/server/game/Handlers/CharacterHandler.cpp
-index 6c503243c..77136f8b1 100644
+index 6c503243cea85f..77136f8b1a0bef 100644
 --- a/src/server/game/Handlers/CharacterHandler.cpp
 +++ b/src/server/game/Handlers/CharacterHandler.cpp
 @@ -2144,7 +2144,7 @@ void WorldSession::HandleCharFactionOrRaceChangeCallback(std::shared_ptr<Charact
@@ -25,7 +32,7 @@ index 6c503243c..77136f8b1 100644
              stmt = CharacterDatabase.GetPreparedStatement(CHAR_INS_CHAR_SKILL_LANGUAGE);
              stmt->SetData(0, lowGuid);
 diff --git a/src/server/shared/SharedDefines.h b/src/server/shared/SharedDefines.h
-index 1b0568fe6..8be349630 100644
+index 1b0568fe6cab1f..37456685d851f8 100644
 --- a/src/server/shared/SharedDefines.h
 +++ b/src/server/shared/SharedDefines.h
 @@ -76,9 +76,10 @@ enum Races
@@ -33,11 +40,11 @@ index 1b0568fe6..8be349630 100644
      RACE_GNOME              = 7,  // TITLE Gnome
      RACE_TROLL              = 8,  // TITLE Troll
 -    //RACE_GOBLIN             = 9,
-+    RACE_GOBLIN             = 9, // TITLE Blood Elf
++    RACE_GOBLIN             = 9,  // TITLE Goblin
      RACE_BLOODELF           = 10, // TITLE Blood Elf
 -    RACE_DRAENEI            = 11 //, TITLE Draenei
 +    RACE_DRAENEI            = 11, // TITLE Draenei
-+    RACE_WORGEN             = 12 //, TITLE Worgen
++    RACE_WORGEN             = 12  // TITLE Worgen
      //RACE_FEL_ORC        = 12,
      //RACE_NAGA           = 13,
      //RACE_BROKEN         = 14,
@@ -62,4 +69,3 @@ index 1b0568fe6..8be349630 100644
 +    (1<<(RACE_GNOME-1)) | (1<<(RACE_DRAENEI-1)) | (1<<(RACE_WORGEN-1)))
  
  #define RACEMASK_HORDE RACEMASK_ALL_PLAYABLE & ~RACEMASK_ALLIANCE
- 
