@@ -1,50 +1,61 @@
-name: core-build
+name: core-build-modules
 on:
-  push:
-  pull_request:
-  workflow_dispatch:
+  workflow_call:
+    inputs:
+      module_repo:
+        required: true
+        type: string
+      module_branch:
+        required: false
+        type: string
 
 jobs:
   build:
     strategy:
       fail-fast: false
       matrix:
-        compiler: [clang]
-    runs-on: ubuntu-20.04
-    name: ${{ matrix.compiler }}
-    env:
-      COMPILER: ${{ matrix.compiler }}
+        include:
+          - os: ubuntu-24.04
+            compiler:
+              CC: clang-18
+              CXX: clang++-18
+    runs-on: ${{ matrix.os }}
+    name: ${{ matrix.os }}-${{ matrix.compiler.CC }}
+    # if: !github.event.pull_request.draft
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           repository: 'azerothcore/azerothcore-wotlk'
           ref: 'master'
           submodules: 'recursive'
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+        with:
+          repository: 'azerothcore/reusable-workflows'
+          path: 'reusable-workflows'
+      - uses: actions/checkout@v4
         with:
           submodules: 'recursive'
           path: 'modules/mod-worgoblin'
       - name: Apply core patch
         run: git apply --ignore-space-change --ignore-whitespace modules/mod-worgoblin/worgoblin.patch
       - name: Cache
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
-          path: /home/runner/.ccache
-          key: ccache:${{ matrix.compiler }}:${{ github.ref }}:${{ github.sha }}
+          path: var/ccache
+          key: ccache:${{ matrix.compiler.CC }}:${{ github.ref }}:${{ github.sha }}
           restore-keys: |
-            ccache:${{ matrix.compiler }}:${{ github.ref }}
-            ccache:${{ matrix.compiler }}
-      - name: Configure OS
-        run: source ./acore.sh install-deps
-        env:
-          CONTINUOUS_INTEGRATION: true
-      - name: Create conf/config.sh
-        run: source ./apps/ci/ci-conf-core.sh
-      - name: Build
-        run: source ./apps/ci/ci-compile.sh
-      - name: Dry run
-        run: source ./apps/ci/ci-dry-run.sh worldserver
-      - name: Check startup errors
-        run: source ./apps/ci/ci-error-check.sh
-      - name: Run unit tests
-        run: source ./apps/ci/ci-run-unit-tests.sh
+            ccache:${{ matrix.compiler.CC }}:${{ github.ref }}
+            ccache:${{ matrix.compiler.CC }}
+      - uses: ./.github/actions/linux-build
+        with:
+          CC: ${{ matrix.compiler.CC }}
+          CXX: ${{ matrix.compiler.CXX }}
+      - name: cpp check
+        run: |
+          sudo apt update -y
+          sudo apt install -y cppcheck
+          cppcheck --force --inline-suppr --suppressions-list=reusable-workflows/cppchecksuppressions.txt --output-file=report.txt modules/
+          if [ -s report.txt ]; then
+            cat report.txt
+            exit 1
+          fi
