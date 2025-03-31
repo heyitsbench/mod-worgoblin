@@ -10,7 +10,7 @@ class announce : public PlayerScript {
 public:
     announce() : PlayerScript("announce") { }
 
-    void OnLogin(Player* player) override
+    void OnPlayerLogin(Player* player) override
     {
         if (sConfigMgr->GetOption<bool>("Announce.enable", true))
         {
