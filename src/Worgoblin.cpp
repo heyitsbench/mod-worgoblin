@@ -5,17 +5,29 @@
 #include "SpellScript.h"
 #include "Config.h"
 
-class announce : public PlayerScript {
+enum Spells
+{
+    BEST_DEALS_ANYWHERE = 69044,
+};
+
+class worgoblin : public PlayerScript {
 
 public:
-    announce() : PlayerScript("announce") { }
+    worgoblin() : PlayerScript("worgoblin") { }
 
     void OnPlayerLogin(Player* player) override
     {
         if (sConfigMgr->GetOption<bool>("Announce.enable", true))
-        {
-            ChatHandler(player->GetSession()).SendSysMessage("This server is running the Worgoblin module."); // Hell yea
-        }
+            ChatHandler(player->GetSession()).SendSysMessage("This server is running the Worgoblin module.");
+    }
+
+    void OnPlayerGetReputationPriceDiscount(Player const* player, FactionTemplateEntry const* factionTemplate, float& discount) override
+    {
+        if (!factionTemplate || !factionTemplate->faction)
+            return;
+
+        if (player->HasSpell(BEST_DEALS_ANYWHERE))
+            discount *= 0.8;
     }
 };
 
@@ -40,6 +52,6 @@ class spell_rocket_barrage : public SpellScript
 
 void Add_Worgoblin()
 {
-    new announce();
+    new worgoblin();
     RegisterSpellScript(spell_rocket_barrage);
 }

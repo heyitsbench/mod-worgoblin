@@ -1,26 +1,26 @@
 DELETE FROM `player_race_stats` WHERE `Race` = 9 OR `Race` = 12;
 INSERT INTO `player_race_stats` (`Race`, `Strength`, `Agility`, `Stamina`, `Intellect`, `Spirit`) VALUES
-(9, -3, 2, 0, 3, -2),
+(9, -3, 2, 0, 3,  -2),
 (12, 3, 2, 0, -4, -1);
 
 DELETE FROM `playercreateinfo` WHERE `race` = 9 OR `race` = 12;
 INSERT INTO `playercreateinfo` (`race`, `class`, `map`, `zone`, `position_x`, `position_y`, `position_z`, `orientation`) VALUES
-(9, 1, 1, 14, -618.518, -4251.67, 38.718, 0), -- Goblins spawn with Orcs/Trolls. Currently the DBC uses the tauren flyby camera, so I gotta fix that.
-(9, 3, 1, 14, -618.518, -4251.67, 38.718, 0),
-(9, 4, 1, 14, -618.518, -4251.67, 38.718, 0),
-(9, 5, 1, 14, -618.518, -4251.67, 38.718, 0),
-(9, 6, 609, 4298, 2358.44, -5666.9, 426.023, 3.65997),
-(9, 7, 1, 14, -618.518, -4251.67, 38.718, 0),
-(9, 8, 1, 14, -618.518, -4251.67, 38.718, 0),
-(9, 9, 1, 14, -618.518, -4251.67, 38.718, 0),
-(12, 1, 1, 141, 10311.3, 832.463, 1326.41, 5.69632), -- Worgen spawn with Nelfs.
-(12, 3, 1, 141, 10311.3, 832.463, 1326.41, 5.69632),
-(12, 4, 1, 141, 10311.3, 832.463, 1326.41, 5.69632),
-(12, 5, 1, 141, 10311.3, 832.463, 1326.41, 5.69632),
-(12, 6, 609, 4298, 2358.44, -5666.9, 426.023, 3.65997),
-(12, 8, 1, 141, 10311.3, 832.463, 1326.41, 5.69632),
-(12, 9, 1, 141, 10311.3, 832.463, 1326.41, 5.69632),
-(12, 11, 1, 141, 10311.3, 832.463, 1326.41, 5.69632);
+(9, 1, 1,    14,   -618.518, -4251.67, 38.718,  0), -- Goblins spawn with Orcs/Trolls. Currently the DBC uses the tauren flyby camera, so I gotta fix that.
+(9, 3, 1,    14,   -618.518, -4251.67, 38.718,  0),
+(9, 4, 1,    14,   -618.518, -4251.67, 38.718,  0),
+(9, 5, 1,    14,   -618.518, -4251.67, 38.718,  0),
+(9, 6, 609,  4298, 2358.44,  -5666.9,  426.023, 3.65997),
+(9, 7, 1,    14,   -618.518, -4251.67, 38.718,  0),
+(9, 8, 1,    14,   -618.518, -4251.67, 38.718,  0),
+(9, 9, 1,    14,   -618.518, -4251.67, 38.718,  0),
+(12, 1, 1,   141,  10311.3,  832.463,  1326.41, 5.69632), -- Worgen spawn with Nelfs.
+(12, 3, 1,   141,  10311.3,  832.463,  1326.41, 5.69632),
+(12, 4, 1,   141,  10311.3,  832.463,  1326.41, 5.69632),
+(12, 5, 1,   141,  10311.3,  832.463,  1326.41, 5.69632),
+(12, 6, 609, 4298, 2358.44,  -5666.9,  426.023, 3.65997),
+(12, 8, 1,   141,  10311.3,  832.463,  1326.41, 5.69632),
+(12, 9, 1,   141,  10311.3,  832.463,  1326.41, 5.69632),
+(12, 11, 1,  141,  10311.3,  832.463,  1326.41, 5.69632);
 
 UPDATE item_template SET allowablerace = allowablerace|256 WHERE allowablerace & 2 AND allowablerace != -1 AND allowablerace != 2147483647 AND allowablerace != 2047 AND allowablerace != 4095 AND allowablerace != 8191 AND allowablerace != 16383 AND allowablerace != 32767 AND allowablerace != 65535 AND allowablerace != 131071 AND allowablerace != 262143 AND allowablerace != 524287 AND allowablerace != 1048575 AND allowablerace != 2097151;
 UPDATE item_template SET allowablerace = allowablerace|2048 WHERE allowablerace & 1 AND allowablerace != -1 AND allowablerace != 2147483647 AND allowablerace != 2047 AND allowablerace != 4095 AND allowablerace != 8191 AND allowablerace != 16383 AND allowablerace != 32767 AND allowablerace != 65535 AND allowablerace != 131071 AND allowablerace != 262143 AND allowablerace != 524287 AND allowablerace != 1048575 AND allowablerace != 2097151;
@@ -110,34 +110,33 @@ INSERT INTO `creature_model_info` (`DisplayID`, `BoundingRadius`, `CombatReach`,
 (39096, 1, 1.5, 2, 0); -- Quik-horse
 
 DELETE FROM `creature_template` WHERE `entry` IN (36613, 46754, 46755, 55272, 55273);
-INSERT INTO `creature_template` (`entry`, `difficulty_entry_1`, `difficulty_entry_2`, `difficulty_entry_3`, `KillCredit1`, `KillCredit2`, `name`, `subname`, `IconName`, `gossip_menu_id`, `minlevel`, `maxlevel`, `exp`, `faction`, `npcflag`, `speed_walk`, `speed_run`, `speed_swim`, `speed_flight`, `detection_range`, `scale`, `rank`, `dmgschool`, `DamageModifier`, `BaseAttackTime`, `RangeAttackTime`, `BaseVariance`, `RangeVariance`, `unit_class`, `unit_flags`, `unit_flags2`, `dynamicflags`, `family`, `trainer_type`, `trainer_spell`, `trainer_class`, `trainer_race`, `type`, `type_flags`, `lootid`, `pickpocketloot`, `skinloot`, `PetSpellDataId`, `VehicleId`, `mingold`, `maxgold`, `AIName`, `MovementType`, `HoverHeight`, `HealthModifier`, `ManaModifier`, `ArmorModifier`, `ExperienceModifier`, `RacialLeader`, `movementId`, `RegenHealth`, `mechanic_immune_mask`, `spell_school_immune_mask`, `flags_extra`, `ScriptName`, `VerifiedBuild`) VALUES
-(36613, 0, 0, 0, 0, 0, 'Gobber', '', NULL, 0, 55, 55, 0, 120, 131072, 1, 1.14286, 1, 1, 18, 1, 0, 0, 1, 2000, 2000, 1, 1, 1, 512, 2048, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, '', 0, 1, 3, 1, 1, 1, 0, 0, 1, 0, 0, 2, '', 12340),
-(46754, 0, 0, 0, 0, 0, 'Goblin Trike', NULL, NULL, 0, 20, 20, 0, 35, 0, 1, 1.38571, 1, 1, 20, 1, 0, 0, 1, 2000, 2000, 1, 1, 1, 33554432, 2048, 0, 0, 0, 0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, '', 0, 1, 1, 1, 1, 1, 0, 140, 1, 0, 0, 0, '', 0),
-(46755, 0, 0, 0, 0, 0, 'Goblin Turbo-Trike', NULL, NULL, 0, 40, 40, 0, 35, 0, 1, 1.38571, 1, 1, 20, 1, 0, 0, 1, 2000, 2000, 1, 1, 1, 33554432, 2048, 0, 0, 0, 0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, '', 0, 1, 1, 1, 1, 1, 0, 140, 1, 0, 0, 0, '', 0),
-(55272, 0, 0, 0, 0, 0, 'Mountain Horse', NULL, NULL, 0, 20, 20, 0, 35, 0, 1, 1.38571, 1, 1, 20, 1, 0, 0, 1, 2000, 2000, 1, 1, 1, 0, 2048, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 0, 1, 1, 1, 1, 1, 0, 140, 1, 0, 0, 0, '', 0),
-(55273, 0, 0, 0, 0, 0, 'Swift Mountain Horse', NULL, NULL, 0, 40, 40, 0, 35, 0, 1, 1.38571, 1, 1, 20, 1, 0, 0, 1, 2000, 2000, 1, 1, 1, 0, 2048, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 0, 1, 1, 1, 1, 1, 0, 140, 1, 0, 0, 0, '', 0);
+INSERT INTO `creature_template` (`entry`, `difficulty_entry_1`, `difficulty_entry_2`, `difficulty_entry_3`, `KillCredit1`, `KillCredit2`, `name`, `subname`, `IconName`, `gossip_menu_id`, `minlevel`, `maxlevel`, `exp`, `faction`, `npcflag`, `speed_walk`, `speed_run`, `speed_swim`, `speed_flight`, `detection_range`, `scale`, `rank`, `dmgschool`, `DamageModifier`, `BaseAttackTime`, `RangeAttackTime`, `BaseVariance`, `RangeVariance`, `unit_class`, `unit_flags`, `unit_flags2`, `dynamicflags`, `family`, `type`, `type_flags`, `lootid`, `pickpocketloot`, `skinloot`, `PetSpellDataId`, `VehicleId`, `mingold`, `maxgold`, `AIName`, `MovementType`, `HoverHeight`, `HealthModifier`, `ManaModifier`, `ArmorModifier`, `ExperienceModifier`, `RacialLeader`, `movementId`, `RegenHealth`, `mechanic_immune_mask`, `spell_school_immune_mask`, `flags_extra`, `ScriptName`, `VerifiedBuild`) VALUES
+(36613, 0, 0, 0, 0, 0, 'Gobber',               '',   NULL, 0, 55, 55, 0, 120, 131072, 1, 1.14286, 1, 1, 18, 1, 0, 0, 1, 2000, 2000, 1, 1, 1, 512,      2048, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, '', 0, 1, 3, 1, 1, 1, 0, 0,   1, 0, 0, 2, '', 0),
+(46754, 0, 0, 0, 0, 0, 'Goblin Trike',         NULL, NULL, 0, 20, 20, 0, 35,  0,      1, 1.38571, 1, 1, 20, 1, 0, 0, 1, 2000, 2000, 1, 1, 1, 33554432, 2048, 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, '', 0, 1, 1, 1, 1, 1, 0, 140, 1, 0, 0, 0, '', 0),
+(46755, 0, 0, 0, 0, 0, 'Goblin Turbo-Trike',   NULL, NULL, 0, 40, 40, 0, 35,  0,      1, 1.38571, 1, 1, 20, 1, 0, 0, 1, 2000, 2000, 1, 1, 1, 33554432, 2048, 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, '', 0, 1, 1, 1, 1, 1, 0, 140, 1, 0, 0, 0, '', 0),
+(55272, 0, 0, 0, 0, 0, 'Mountain Horse',       NULL, NULL, 0, 20, 20, 0, 35,  0,      1, 1.38571, 1, 1, 20, 1, 0, 0, 1, 2000, 2000, 1, 1, 1, 0,        2048, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 0, 1, 1, 1, 1, 1, 0, 140, 1, 0, 0, 0, '', 0),
+(55273, 0, 0, 0, 0, 0, 'Swift Mountain Horse', NULL, NULL, 0, 40, 40, 0, 35,  0,      1, 1.38571, 1, 1, 20, 1, 0, 0, 1, 2000, 2000, 1, 1, 1, 0,        2048, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, '', 0, 1, 1, 1, 1, 1, 0, 140, 1, 0, 0, 0, '', 0);
 
 DELETE FROM `creature_template_model` WHERE `CreatureID` IN (36613, 46754, 46755, 55272, 55273);
-
 INSERT INTO `creature_template_model` (`CreatureID`, `Idx`, `CreatureDisplayID`, `DisplayScale`, `Probability`, `VerifiedBuild`) VALUES
-	(36613, 0, 32385, 1, 1, 12340),
-	(46754, 0, 35249, 1, 1, 12340),
-	(46755, 0, 35250, 1, 1, 12340),
-    (55272, 0, 39096, 1, 1, 12340),
-	(55273, 0, 39095, 1, 1, 12340);
+(36613, 0, 32385, 1, 1, 0),
+(46754, 0, 35249, 1, 1, 0),
+(46755, 0, 35250, 1, 1, 0),
+(55272, 0, 39096, 1, 1, 0),
+(55273, 0, 39095, 1, 1, 0);
 
 DELETE FROM `achievement_criteria_data` WHERE `criteria_id` IN (13473, 13474, 13475, 13476, 13477, 13478);
 INSERT INTO `achievement_criteria_data` (`criteria_id`, `type`, `value1`, `value2`, `ScriptName`) VALUES
-(13473, 2, 0, 9, ''), -- Achievement 2422 (Shake Your Bunny-Maker)
-(13473, 9, 18, 0, ''),
-(13473, 10, 1, 0, ''),
-(13474, 2, 0, 12, ''),
-(13474, 9, 18, 0, ''),
-(13474, 10, 1, 0, ''),
-(13475, 2, 0, 9, ''), -- Achievement 291 (Check Your Head)
-(13476, 2, 0, 12, ''),
-(13477, 21, 0, 9, ''), -- Achievement 1429 (Realm First! Level 80 Goblin)
-(13478, 21, 0, 12, ''); -- Achievement 1430 (Realm First! Level 80 Worgen)
+(13473, 2,  0,  9,  ''), -- Achievement 2422 (Shake Your Bunny-Maker)
+(13473, 9,  18, 0,  ''),
+(13473, 10, 1,  0,  ''),
+(13474, 2,  0,  12, ''),
+(13474, 9,  18, 0,  ''),
+(13474, 10, 1,  0,  ''),
+(13475, 2,  0,  9,  ''), -- Achievement 291 (Check Your Head)
+(13476, 2,  0,  12, ''),
+(13477, 21, 0,  9,  ''), -- Achievement 1429 (Realm First! Level 80 Goblin)
+(13478, 21, 0,  12, ''); -- Achievement 1430 (Realm First! Level 80 Worgen)
 
 UPDATE quest_template SET AllowableRaces = AllowableRaces|256 WHERE AllowableRaces & 2 AND AllowableRaces != -1 AND AllowableRaces != 2147483647 AND AllowableRaces != 2047 AND AllowableRaces != 4095 AND AllowableRaces != 8191 AND AllowableRaces != 16383 AND AllowableRaces != 32767 AND AllowableRaces != 65535 AND AllowableRaces != 131071 AND AllowableRaces != 262143 AND AllowableRaces != 524287 AND AllowableRaces != 1048575 AND AllowableRaces != 2097151;
 UPDATE quest_template SET AllowableRaces = AllowableRaces|2048 WHERE AllowableRaces & 1 AND AllowableRaces != -1 AND AllowableRaces != 2147483647 AND AllowableRaces != 2047 AND AllowableRaces != 4095 AND AllowableRaces != 8191 AND AllowableRaces != 16383 AND AllowableRaces != 32767 AND AllowableRaces != 65535 AND AllowableRaces != 131071 AND AllowableRaces != 262143 AND AllowableRaces != 524287 AND AllowableRaces != 1048575 AND AllowableRaces != 2097151;
