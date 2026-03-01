@@ -12,15 +12,9 @@ This module makes *heavy* use of client patching and modification. Because of th
 
 ## How to Install
 
-As of right now, the hooks for allowing custom races is not present in AzerothCore. Because of this, you'll have to manually apply the change required to your AzerothCore source.
+### 1) Add the `mod-worgoblin` folder to your AzerothCore source's modules directory.
 
-### 1) Apply the [worgoblin.patch](https://github.com/benjymansy123/mod-worgoblin/blob/master/worgoblin.patch) to your AzerothCore source directory.
-
-This can be accomplished in a couple different ways. You could do it using Git by using the following command:
-
-`git apply --ignore-space-change --ignore-whitespace modules/mod-worgoblin/worgoblin.patch`
-
-Or you can do it manually through a text editor of your choice by changing the lines required where a "-" indicates the original line and a "+" indicates the change necessary. Where to find the specific lines can be found after the @@ before each change, where it states the line number. There are a total of seven lines to change and one line to add.
+This can be done by cloning the repository through git or by downloading the module as a ZIP. If you choose the latter, make sure that the folder name of the module is exactly `mod-worgoblin`.
 
 ### 2) Replace the DBC files in your AzerothCore Data directory with the ones provided in [DBFilesClient](https://github.com/heyitsbench/mod-worgoblin/tree/master/data/patch/DBFilesClient).
 
