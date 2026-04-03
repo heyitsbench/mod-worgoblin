@@ -3,6 +3,13 @@ INSERT INTO `player_race_stats` (`Race`, `Strength`, `Agility`, `Stamina`, `Inte
 (9, -3, 2, 0, 3,  -2),
 (12, 3, 2, 0, -4, -1);
 
+DELETE FROM `player_totem_model` WHERE `RaceID` = 9;
+INSERT INTO `player_totem_model` (`TotemID`, `RaceID`, `ModelID`) VALUES
+(1, 9, 4589),
+(2, 9, 4588),
+(3, 9, 4587),
+(4, 9, 4590);
+
 DELETE FROM `playercreateinfo` WHERE `race` = 9 OR `race` = 12;
 INSERT INTO `playercreateinfo` (`race`, `class`, `map`, `zone`, `position_x`, `position_y`, `position_z`, `orientation`) VALUES
 (9, 1, 1,    14,   -618.518, -4251.67, 38.718,  0), -- Goblins spawn with Orcs/Trolls. Currently the DBC uses the tauren flyby camera, so I gotta fix that.
