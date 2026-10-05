@@ -281,8 +281,9 @@ static bool ReadBackFields(Player* player)
     return true;
 }
 
-// Only through UpdateForm(), which guards against re-entry.
-static void SetWorgenForm(Player* player, bool human)
+// Only through UpdateForm(), which guards against re-entry. `asked`:
+// Unit::RestoreDisplayId() asked Two Forms, so no other aura owns the display.
+static void SetWorgenForm(Player* player, bool human, bool asked)
 {
     WorgenFormData* d = Forms(player);
 
@@ -297,12 +298,13 @@ static void SetWorgenForm(Player* player, bool human)
     if (!CanChangeForm(player))
         return;
 
-    // In wolf form only replace our own human display: InitDisplayIds()
-    // (.modify gender) sets the new display before the new native one.
+    // In wolf form only replace our own human display, or one handed to Two
+    // Forms: InitDisplayIds() (.modify gender) sets the new display before the
+    // new native one.
     uint32 const current = player->GetDisplayId();
     bool const ours = current == DISPLAY_HUMAN_MALE || current == DISPLAY_HUMAN_FEMALE;
     uint32 const display = human ? HumanDisplay(player) : player->GetNativeDisplayId();
-    if (current != display && (human || ours))
+    if (current != display && (human || ours || asked))
     {
         // SetDisplayId() resets the scale; keep scale auras (Giant Growth).
         player->SetDisplayId(display);
@@ -339,7 +341,7 @@ static void UpdateForm(Player* player, bool asked = false)
     d->updating = true;
 
     if (d->loaded)
-        SetWorgenForm(player, WantsHuman(player));
+        SetWorgenForm(player, WantsHuman(player), asked);
 
     // Another transform owns the display, but RestoreDisplayId() only asks the
     // newest transform, and under a warrior stance it sets the native display
