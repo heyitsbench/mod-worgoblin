@@ -257,9 +257,10 @@ static void LoadForms(Player* player)
 // The barbershop has no script hook: WorldSession::HandleAlterAppearance ->
 // Player::ChangeBarberShopStyle calls no scripts. So a haircut is detected by
 // comparing. In human form, fields that differ from the human set can only
-// come from the barbershop -> adopt them. That way the REAL barbershop styles
-// the form you are in, as in Cataclysm. In wolf form the fields are the wolf
-// set. Returns true if the human set changed.
+// come from the barbershop -> adopt them for the human form. The server only
+// accepts worgen styles (it checks getRace()), so they are moved to valid
+// human values. In wolf form the fields are the wolf set. Returns true if the
+// human set changed.
 static bool ReadBackFields(Player* player)
 {
     WorgenFormData* d = Forms(player);
@@ -275,6 +276,8 @@ static bool ReadBackFields(Player* player)
         return false;
 
     std::copy(cur, cur + A_COUNT, d->h);
+    if (ClampHuman(player, d->h))
+        WriteAppearance(player, d->h);
     return true;
 }
 
@@ -294,9 +297,17 @@ static void SetWorgenForm(Player* player, bool human)
     if (!CanChangeForm(player))
         return;
 
+    // In wolf form only replace our own human display: InitDisplayIds()
+    // (.modify gender) sets the new display before the new native one.
+    uint32 const current = player->GetDisplayId();
+    bool const ours = current == DISPLAY_HUMAN_MALE || current == DISPLAY_HUMAN_FEMALE;
     uint32 const display = human ? HumanDisplay(player) : player->GetNativeDisplayId();
-    if (player->GetDisplayId() != display)
+    if (current != display && (human || ours))
+    {
+        // SetDisplayId() resets the scale; keep scale auras (Giant Growth).
         player->SetDisplayId(display);
+        player->RecalculateObjectScale();
+    }
 }
 
 // Human while Two Forms is on, unless another aura owns the display, combat
@@ -350,7 +361,8 @@ static void UpdateForm(Player* player, bool asked = false)
 //
 // The core has no lookup per race and type, so sCharSectionsStore is walked.
 // Skin and face only from rows with SECTION_FLAG_PLAYER - what character
-// creation offers; the rest are NPC skins. Hair style and facial hair are what
+// creation offers; the rest are NPC skins. Rows with SECTION_FLAG_DEATH_KNIGHT
+// only for death knights. Hair style and facial hair are what
 // the barbershop accepts (BarberShopStyle.dbc), hair colour any CharSections
 // row for that style: some barbershop styles only have non-player rows.
 //
@@ -360,10 +372,11 @@ static void UpdateForm(Player* player, bool asked = false)
 static bool HumanSectionExists(Player* player, CharSectionType section, uint8 type, uint8 color,
                                bool playerOnly = true)
 {
+    bool const dk = player->getClass() == CLASS_DEATH_KNIGHT;
     for (CharSectionsEntry const* e : sCharSectionsStore)
         if (e->RaceID == RACE_HUMAN && e->SexID == NativeGender(player) &&
             e->BaseSection == uint32(section) && e->VariationIndex == type && e->ColorIndex == color &&
-            (!playerOnly || (e->Flags & SECTION_FLAG_PLAYER)))
+            (!playerOnly || ((e->Flags & SECTION_FLAG_PLAYER) && (dk || !(e->Flags & SECTION_FLAG_DEATH_KNIGHT)))))
             return true;
     return false;
 }

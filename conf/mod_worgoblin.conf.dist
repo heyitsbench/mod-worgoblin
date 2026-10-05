@@ -10,3 +10,7 @@ Announce.enable=true
 # Default: 1
 
 Worgoblin.TwoForms.CombatShift = 1
+
+# Two Forms keeps the worgen appearance through a crash only with
+# CharacterDatabase.WorkerThreads = 1 (worldserver.conf, the default): its
+# table write must land before the character save it belongs to.
