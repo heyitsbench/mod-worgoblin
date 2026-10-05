@@ -64,8 +64,7 @@ VALUES (9000001, 0, 36445, 1, 1, 0);
 -- Spawns: Shadowglen, next to where worgen start (playercreateinfo race 12:
 -- map 1, 10311.3 832.463 1326.41), and Stormwind's barbershop, next to
 -- Jelinek Sharpshear (-8744.62 657.759 105.175).
-DELETE FROM `creature` WHERE `id` = 9000001;
-SET @GUID := (SELECT IFNULL(MAX(`guid`), 0) FROM `creature`);
+DELETE FROM `creature` WHERE `id` = 9000001 AND `guid` IN (9000001, 9000002);
 INSERT INTO `creature`
   (`guid`, `id`, `map`, `zoneId`, `areaId`, `spawnMask`, `phaseMask`, `equipment_id`,
    `position_x`, `position_y`, `position_z`, `orientation`,
@@ -73,7 +72,7 @@ INSERT INTO `creature`
    `MovementType`, `npcflag`, `unit_flags`, `dynamicflags`, `ScriptName`,
    `VerifiedBuild`, `CreateObject`, `Comment`)
 VALUES
-  (@GUID + 1, 9000001, 1, 0, 0, 1, 1, 0, 10314.5, 835.2, 1326.41, 5.69632,
+  (9000001, 9000001, 1, 0, 0, 1, 1, 0, 10314.5, 835.2, 1326.41, 5.69632,
    300, 0, 0, 1, 0, 0, 0, 0, 0, '', 0, 0, 'Gilnean Barber - worgen start zone'),
-  (@GUID + 2, 9000001, 0, 0, 0, 1, 1, 0, -8746.5, 659.6, 105.175, 3.1765,
+  (9000002, 9000001, 0, 0, 0, 1, 1, 0, -8746.5, 659.6, 105.175, 3.1765,
    300, 0, 0, 1, 0, 0, 0, 0, 0, '', 0, 0, 'Gilnean Barber - Stormwind');

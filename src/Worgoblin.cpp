@@ -10,6 +10,7 @@
 #include "SpellAuraEffects.h"
 #include "Config.h"
 
+#include <algorithm>
 #include <string>
 
 enum Spells
@@ -41,7 +42,8 @@ enum Spells
 //     own comment). The field is rebuilt from the database on every login.
 //   * The five appearance values, on the other hand, live in
 //     PLAYER_BYTES/PLAYER_BYTES_2, which ARE saved. So worgen_form_appearance
-//     holds both sets and is the source of truth (data/sql/db-characters).
+//     holds the human set, and the wolf set for as long as `characters` may
+//     hold the human one (data/sql/db-characters).
 //
 // The aura is a WISH for human form: combat brings the wolf out, and the human
 // form comes back when combat ends (Worgoblin.TwoForms.CombatShift). There is
@@ -81,6 +83,8 @@ struct WorgenFormData : public DataMap::Base
     bool  human      = false;               // is the player in human form now
 };
 
+static bool sCombatShift = true;
+
 static WorgenFormData* Forms(Player* player)
 {
     return player->CustomData.GetDefault<WorgenFormData>("WorgenFormData");
@@ -93,12 +97,26 @@ static bool IsWorgenPlayer(Unit const* unit)
     return unit && unit->IsPlayer() && unit->getRace() == RACE_WORGEN_ID;
 }
 
-// Never touch the form while a druid is shapeshifted. The shapeshift aura owns
-// the display then, and a SetDisplayId() from here would win and leave a
-// "bear" that looks like a human.
-static bool CanChangeForm(Unit const* unit)
+// Never touch the display while a form with its own model (a druid form) or
+// another transform (a costume, an illusion) is on. That aura owns the display
+// then, and a SetDisplayId() from here would win and leave a "bear" that looks
+// like a human. Unit::RestoreDisplayId() hands the display back to Two Forms
+// when the other aura falls off. Warrior stances are shapeshift forms without
+// a model, so they don't count.
+static bool CanChangeForm(Unit* unit)
 {
-    return IsWorgenPlayer(unit) && unit->GetShapeshiftForm() == FORM_NONE;
+    if (!IsWorgenPlayer(unit))
+        return false;
+
+    for (AuraEffect const* eff : unit->GetAuraEffectsByType(SPELL_AURA_MOD_SHAPESHIFT))
+        if (unit->GetModelForForm(ShapeshiftForm(eff->GetMiscValue()), eff->GetId()))
+            return false;
+
+    for (AuraEffect const* eff : unit->GetAuraEffectsByType(SPELL_AURA_TRANSFORM))
+        if (eff->GetId() != SPELL_TWO_FORMS)
+            return false;
+
+    return true;
 }
 
 static void ReadAppearance(Player* player, uint8* out)
@@ -119,15 +137,20 @@ static void WriteAppearance(Player* player, uint8 const* in)
     player->SetByteValue(PLAYER_BYTES_2, 0, in[A_FACIALHAIR]);
 }
 
+static bool ClampHuman(Player* player, uint8* a);
+
+// `human` = 1 while the player is in human form: an autosave then writes the
+// human set into `characters`, so w_ holds the wolf set. With 0, `characters`
+// holds the wolf set, including barbershop and character-screen changes.
 static void SaveForms(Player* player)
 {
     WorgenFormData* d = Forms(player);
     CharacterDatabase.Execute(
         "REPLACE INTO worgen_form_appearance "
-        "(guid,w_skin,w_face,w_hair,w_haircolor,w_facialhair,"
+        "(guid,human,w_skin,w_face,w_hair,w_haircolor,w_facialhair,"
         "h_skin,h_face,h_hair,h_haircolor,h_facialhair) "
-        "VALUES ({},{},{},{},{},{},{},{},{},{},{})",
-        player->GetGUID().GetCounter(),
+        "VALUES ({},{},{},{},{},{},{},{},{},{},{},{})",
+        player->GetGUID().GetCounter(), uint32(d->human),
         uint32(d->w[A_SKIN]), uint32(d->w[A_FACE]), uint32(d->w[A_HAIR]),
         uint32(d->w[A_HAIRCOLOR]), uint32(d->w[A_FACIALHAIR]),
         uint32(d->h[A_SKIN]), uint32(d->h[A_FACE]), uint32(d->h[A_HAIR]),
@@ -145,28 +168,36 @@ static void LoadForms(Player* player)
     d->human = false;
 
     QueryResult res = CharacterDatabase.Query(
-        "SELECT w_skin,w_face,w_hair,w_haircolor,w_facialhair,"
+        "SELECT human,w_skin,w_face,w_hair,w_haircolor,w_facialhair,"
         "h_skin,h_face,h_hair,h_haircolor,h_facialhair "
         "FROM worgen_form_appearance WHERE guid = {}",
         player->GetGUID().GetCounter());
 
+    bool save = !res;
     if (res)
     {
         Field* f = res->Fetch();
         for (uint8 i = 0; i < A_COUNT; ++i)
-            d->w[i] = f[i].Get<uint8>();
-        for (uint8 i = 0; i < A_COUNT; ++i)
-            d->h[i] = f[i + A_COUNT].Get<uint8>();
+            d->h[i] = f[i + 1 + A_COUNT].Get<uint8>();
 
-        // The table is the source of truth. If the server died while the
-        // player was in human form, `characters` holds the human set - this
-        // puts it right.
-        WriteAppearance(player, d->w);
+        // The server went down while the player was in human form, so
+        // `characters` may hold the human set.
+        if (f[0].Get<uint8>())
+        {
+            for (uint8 i = 0; i < A_COUNT; ++i)
+                d->w[i] = f[i + 1].Get<uint8>();
+            WriteAppearance(player, d->w);
+            save = true;
+        }
     }
-    else
-        SaveForms(player);
+
+    // A gender change, or wolf choices with no human equivalent.
+    if (ClampHuman(player, d->h))
+        save = true;
 
     d->loaded = true;
+    if (save)
+        SaveForms(player);
 }
 
 // The barbershop has no script hook: WorldSession::HandleAlterAppearance ->
@@ -198,10 +229,14 @@ static void AdoptBarbershopChanges(Player* player)
 static void SetWorgenForm(Player* player, bool human)
 {
     WorgenFormData* d = Forms(player);
+    bool const wasHuman = d->human;
 
-    // Last chance to catch a haircut before the fields are overwritten.
-    if (!human)
+    // Last chance to catch a haircut before the fields are overwritten: in
+    // human form it belongs to the human set, in wolf form to the wolf set.
+    if (wasHuman)
         AdoptBarbershopChanges(player);
+    else if (d->loaded)
+        ReadAppearance(player, d->w);
 
     if (human)
     {
@@ -214,18 +249,21 @@ static void SetWorgenForm(Player* player, bool human)
     else
     {
         player->SetByteValue(UNIT_FIELD_BYTES_0, 0, RACE_WORGEN_ID);
-        player->SetDisplayId(player->GetNativeDisplayId());
+        if (CanChangeForm(player))
+            player->SetDisplayId(player->GetNativeDisplayId());
         if (d->loaded)
             WriteAppearance(player, d->w);
     }
 
     d->human = human;
+    if (d->loaded && human != wasHuman)
+        SaveForms(player);
 }
 
 // When 0, the human form stays also in combat.
 static bool CombatShiftEnabled()
 {
-    return sConfigMgr->GetOption<bool>("Worgoblin.TwoForms.CombatShift", true);
+    return sCombatShift;
 }
 
 // --- valid human appearances -----------------------------------------------
@@ -236,15 +274,21 @@ static bool CombatShiftEnabled()
 // certain skin colours, and a skin change must validate the face again.
 //
 // The core has no lookup per race and type, so sCharSectionsStore is walked.
-// Only rows with SECTION_FLAG_PLAYER - what character creation offers; the
-// rest are NPC skins.
+// Skin and face only from rows with SECTION_FLAG_PLAYER - what character
+// creation offers; the rest are NPC skins. Hair style and facial hair are what
+// the barbershop accepts (BarberShopStyle.dbc), hair colour any CharSections
+// row for that style: some barbershop styles only have non-player rows.
+//
+// The wolf choices are not always valid human ones: female worgen have facial
+// hair 0-11 and skin 10-11, human females facial hair 0-6 and no skin 10-11.
 
-static bool HumanSectionExists(Player* player, CharSectionType section, uint8 type, uint8 color)
+static bool HumanSectionExists(Player* player, CharSectionType section, uint8 type, uint8 color,
+                               bool playerOnly = true)
 {
     for (CharSectionsEntry const* e : sCharSectionsStore)
         if (e->RaceID == RACE_HUMAN && e->SexID == player->getGender() &&
             e->BaseSection == uint32(section) && e->VariationIndex == type && e->ColorIndex == color &&
-            (e->Flags & SECTION_FLAG_PLAYER))
+            (!playerOnly || (e->Flags & SECTION_FLAG_PLAYER)))
             return true;
     return false;
 }
@@ -259,29 +303,65 @@ static bool HumanFaceExists(Player* player, uint8 face, uint8 skin)
     return HumanSectionExists(player, SECTION_TYPE_FACE, face, skin);
 }
 
+// BarberShopStyle type: 0 hair style, 2 facial hair.
+static bool HumanBarberStyleExists(Player* player, uint32 type, uint8 id)
+{
+    for (BarberShopStyleEntry const* e : sBarberShopStyleStore)
+        if (e->type == type && e->race == RACE_HUMAN && e->gender == player->getGender() && e->hair_id == id)
+            return true;
+    return false;
+}
+
 // Steps forward (dir=1) or backward (dir=-1) to the next valid value. The loop
 // is bounded by the 256 possible indices; if there is no other valid value,
 // it stays put.
-static uint8 CycleSkin(Player* player, uint8 cur, int dir)
+template<typename Valid>
+static uint8 NextValid(uint8 cur, int dir, Valid valid)
 {
     for (int step = 1; step < 256; ++step)
     {
         uint8 cand = uint8(((int(cur) + dir * step) % 256 + 256) % 256);
-        if (HumanSkinExists(player, cand))
+        if (valid(cand))
             return cand;
     }
     return cur;
 }
 
+static uint8 CycleSkin(Player* player, uint8 cur, int dir)
+{
+    return NextValid(cur, dir, [player](uint8 v) { return HumanSkinExists(player, v); });
+}
+
 static uint8 CycleFace(Player* player, uint8 cur, uint8 skin, int dir)
 {
-    for (int step = 1; step < 256; ++step)
-    {
-        uint8 cand = uint8(((int(cur) + dir * step) % 256 + 256) % 256);
-        if (HumanFaceExists(player, cand, skin))
-            return cand;
-    }
-    return cur;
+    return NextValid(cur, dir, [player, skin](uint8 v) { return HumanFaceExists(player, v, skin); });
+}
+
+// Moves every invalid value to the next valid one. Returns true if anything
+// changed.
+static bool ClampHuman(Player* player, uint8* a)
+{
+    uint8 const old[A_COUNT] = { a[0], a[1], a[2], a[3], a[4] };
+
+    if (!HumanSkinExists(player, a[A_SKIN]))
+        a[A_SKIN] = CycleSkin(player, a[A_SKIN], 1);
+    if (!HumanFaceExists(player, a[A_FACE], a[A_SKIN]))
+        a[A_FACE] = CycleFace(player, a[A_FACE], a[A_SKIN], 1);
+
+    auto hairValid = [player](uint8 v) { return HumanBarberStyleExists(player, 0, v); };
+    if (!hairValid(a[A_HAIR]))
+        a[A_HAIR] = NextValid(a[A_HAIR], 1, hairValid);
+
+    uint8 const hair = a[A_HAIR];
+    auto colorValid = [player, hair](uint8 v) { return HumanSectionExists(player, SECTION_TYPE_HAIR, hair, v, false); };
+    if (!colorValid(a[A_HAIRCOLOR]))
+        a[A_HAIRCOLOR] = NextValid(a[A_HAIRCOLOR], 1, colorValid);
+
+    auto facialValid = [player](uint8 v) { return HumanBarberStyleExists(player, 2, v); };
+    if (!facialValid(a[A_FACIALHAIR]))
+        a[A_FACIALHAIR] = NextValid(a[A_FACIALHAIR], 1, facialValid);
+
+    return !std::equal(a, a + A_COUNT, old);
 }
 
 class worgoblin : public PlayerScript
@@ -300,7 +380,8 @@ public:
         LoadForms(player);
 
         // The aura was re-applied during _LoadAuras, BEFORE this hook, when
-        // the appearance was not loaded yet. Set the form again now that it is.
+        // the appearance was not loaded yet. Set the form again now that it
+        // is. A druid form or another transform keeps the display.
         SetWorgenForm(player, player->HasAura(SPELL_TWO_FORMS) && CanChangeForm(player));
     }
 
@@ -318,8 +399,16 @@ public:
         // Write the wolf appearance back BEFORE SaveToDB. The hook is called
         // from WorldSession::LogoutPlayer before _player->SaveToDB(), so the
         // row in `characters` - and the character list - keeps the canonical
-        // form.
+        // form. The auras are removed after the save, and Two Forms' remove
+        // handler must not take these bytes for a haircut in human form.
         WriteAppearance(player, d->w);
+        d->human = false;
+        SaveForms(player);
+    }
+
+    void OnPlayerDeleteFromDB(CharacterDatabaseTransaction trans, uint32 guid) override
+    {
+        trans->Append("DELETE FROM worgen_form_appearance WHERE guid = {}", guid);
     }
 
     void OnPlayerGetReputationPriceDiscount(Player const* player, FactionTemplateEntry const* factionTemplate, float& discount) override
@@ -434,8 +523,10 @@ class spell_worgen_two_forms_aura : public AuraScript
     {
         PreventDefaultAction();
 
+        // Also under a druid form: the race byte and the wolf set go back now,
+        // the display when the form falls off.
         Player* target = GetTarget() ? GetTarget()->ToPlayer() : nullptr;
-        if (target && CanChangeForm(target))
+        if (IsWorgenPlayer(target))
             SetWorgenForm(target, false);
     }
 
@@ -545,6 +636,7 @@ public:
             case GB_RESET:
                 d->h[A_SKIN] = d->w[A_SKIN];
                 d->h[A_FACE] = d->w[A_FACE];
+                ClampHuman(player, d->h);
                 break;
             case GB_DONE:
             default:
@@ -584,9 +676,21 @@ private:
     }
 };
 
+class worgoblin_config : public WorldScript
+{
+public:
+    worgoblin_config() : WorldScript("worgoblin_config", { WORLDHOOK_ON_AFTER_CONFIG_LOAD }) { }
+
+    void OnAfterConfigLoad(bool /*reload*/) override
+    {
+        sCombatShift = sConfigMgr->GetOption<bool>("Worgoblin.TwoForms.CombatShift", true);
+    }
+};
+
 void Add_Worgoblin()
 {
     new worgoblin();
+    new worgoblin_config();
     new npc_gilnean_barber();
     RegisterSpellScript(spell_rocket_barrage);
     RegisterSpellAndAuraScriptPair(spell_worgen_two_forms, spell_worgen_two_forms_aura);
