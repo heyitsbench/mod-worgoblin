@@ -82,6 +82,7 @@ struct WorgenFormData : public DataMap::Base
     bool  loaded     = false;
     bool  human      = false;               // is the player in human form now
     bool  savedHuman = false;               // the last save was in human form
+    bool  wolfSaved  = false;               // a wolf-form save since then
 };
 
 static bool sCombatShift = true;
@@ -121,8 +122,9 @@ static AuraEffect* OtherTransform(Unit* unit)
 // another transform (a costume, an illusion) is on. That aura owns the display
 // then, and a SetDisplayId() from here would win and leave a "bear" that looks
 // like a human. Unit::RestoreDisplayId() hands the display back to Two Forms
-// when the other aura falls off. Warrior stances are shapeshift forms without
-// a model, so they don't count.
+// when the other aura falls off; under a form without a model it sets the
+// native display instead, and worgoblin_display puts the human one back.
+// Warrior stances are shapeshift forms without a model, so they don't count.
 static bool CanChangeForm(Unit* unit)
 {
     return IsWorgenPlayer(unit) && !HasModelForm(unit) && !OtherTransform(unit);
@@ -134,6 +136,11 @@ static bool CanChangeForm(Unit* unit)
 static uint8 NativeGender(Player* player)
 {
     return player->GetByteValue(PLAYER_BYTES_3, 0);
+}
+
+static uint32 HumanDisplay(Player* player)
+{
+    return NativeGender(player) == GENDER_MALE ? DISPLAY_HUMAN_MALE : DISPLAY_HUMAN_FEMALE;
 }
 
 static void ReadAppearance(Player* player, uint8* out)
@@ -185,6 +192,7 @@ static void LoadForms(Player* player)
         d->h[i] = d->w[i];
     d->human = false;
     d->savedHuman = false;
+    d->wolfSaved = false;
 
     QueryResult res = CharacterDatabase.Query(
         "SELECT human,w_skin,w_face,w_hair,w_haircolor,w_facialhair,"
@@ -262,11 +270,13 @@ static void SetWorgenForm(Player* player, bool human)
     else if (d->loaded)
         ReadAppearance(player, d->w);
 
+    // Before SetDisplayId(), which worgoblin_display watches.
+    d->human = human;
+
     if (human)
     {
         player->SetByteValue(UNIT_FIELD_BYTES_0, 0, RACE_HUMAN);
-        player->SetDisplayId(NativeGender(player) == GENDER_MALE
-                             ? DISPLAY_HUMAN_MALE : DISPLAY_HUMAN_FEMALE);
+        player->SetDisplayId(HumanDisplay(player));
         if (d->loaded)
             WriteAppearance(player, d->h);
     }
@@ -278,8 +288,6 @@ static void SetWorgenForm(Player* player, bool human)
         if (d->loaded)
             WriteAppearance(player, d->w);
     }
-
-    d->human = human;
 }
 
 // When 0, the human form stays also in combat.
@@ -437,11 +445,32 @@ public:
             return;
 
         AdoptBarbershopChanges(player);
-        if (d->human != d->savedHuman)
+        if (d->human)
         {
-            d->savedHuman = d->human;
-            SaveForms(player);
+            d->wolfSaved = false;
+            if (!d->savedHuman)
+            {
+                d->savedHuman = true;
+                SaveForms(player);
+            }
+            return;
         }
+
+        if (!d->savedHuman)
+            return;
+
+        // This save puts the wolf set into `characters`, but the flag is
+        // written outside the save's transaction and can land first. So it
+        // is cleared one wolf-form save later; until then w_ is kept current.
+        ReadAppearance(player, d->w);
+        if (d->wolfSaved)
+        {
+            d->savedHuman = false;
+            d->wolfSaved = false;
+        }
+        else
+            d->wolfSaved = true;
+        SaveForms(player);
     }
 
     void OnPlayerDeleteFromDB(CharacterDatabaseTransaction trans, uint32 guid) override
@@ -736,10 +765,33 @@ public:
     }
 };
 
+// Under a shapeshift form without a model (a warrior stance),
+// Unit::RestoreDisplayId() sets the native display when a costume ends and
+// doesn't ask Two Forms. Put the human display back.
+class worgoblin_display : public UnitScript
+{
+public:
+    worgoblin_display() : UnitScript("worgoblin_display", true, { UNITHOOK_ON_DISPLAYID_CHANGE }) { }
+
+    void OnDisplayIdChange(Unit* unit, uint32 displayId) override
+    {
+        if (!IsWorgenPlayer(unit) || displayId != unit->GetNativeDisplayId())
+            return;
+
+        Player* player = unit->ToPlayer();
+        WorgenFormData* d = Forms(player);
+        if (!d->loaded || !d->human || !player->HasAura(SPELL_TWO_FORMS) || !CanChangeForm(player))
+            return;
+
+        player->SetDisplayId(HumanDisplay(player));
+    }
+};
+
 void Add_Worgoblin()
 {
     new worgoblin();
     new worgoblin_config();
+    new worgoblin_display();
     new npc_gilnean_barber();
     RegisterSpellScript(spell_rocket_barrage);
     RegisterSpellAndAuraScriptPair(spell_worgen_two_forms, spell_worgen_two_forms_aura);
