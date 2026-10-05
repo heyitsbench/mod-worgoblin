@@ -330,8 +330,8 @@ static bool IsPlayerModel(Player* player, uint32 display)
 }
 
 // The one place the form is decided, called from every hook that can change
-// WantsHuman() and from every display change. `asked`: Unit::RestoreDisplayId()
-// asked Two Forms for the display.
+// WantsHuman() and from every display change. `asked`: the core handed the
+// display to Two Forms (see SetWorgenForm()).
 static void UpdateForm(Player* player, bool asked = false)
 {
     WorgenFormData* d = Forms(player);
