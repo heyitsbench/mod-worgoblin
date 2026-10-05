@@ -81,6 +81,7 @@ struct WorgenFormData : public DataMap::Base
     uint8 h[A_COUNT] = { 0, 0, 0, 0, 0 };   // human form
     bool  loaded     = false;
     bool  human      = false;               // is the player in human form now
+    bool  savedHuman = false;               // the last save was in human form
 };
 
 static bool sCombatShift = true;
@@ -97,6 +98,25 @@ static bool IsWorgenPlayer(Unit const* unit)
     return unit && unit->IsPlayer() && unit->getRace() == RACE_WORGEN_ID;
 }
 
+// A shapeshift form with its own model; warrior stances have none.
+static bool HasModelForm(Unit* unit)
+{
+    for (AuraEffect const* eff : unit->GetAuraEffectsByType(SPELL_AURA_MOD_SHAPESHIFT))
+        if (unit->GetModelForForm(ShapeshiftForm(eff->GetMiscValue()), eff->GetId()))
+            return true;
+    return false;
+}
+
+// The newest transform other than Two Forms.
+static AuraEffect* OtherTransform(Unit* unit)
+{
+    AuraEffect* other = nullptr;
+    for (AuraEffect* eff : unit->GetAuraEffectsByType(SPELL_AURA_TRANSFORM))
+        if (eff->GetId() != SPELL_TWO_FORMS)
+            other = eff;
+    return other;
+}
+
 // Never touch the display while a form with its own model (a druid form) or
 // another transform (a costume, an illusion) is on. That aura owns the display
 // then, and a SetDisplayId() from here would win and leave a "bear" that looks
@@ -105,18 +125,15 @@ static bool IsWorgenPlayer(Unit const* unit)
 // a model, so they don't count.
 static bool CanChangeForm(Unit* unit)
 {
-    if (!IsWorgenPlayer(unit))
-        return false;
+    return IsWorgenPlayer(unit) && !HasModelForm(unit) && !OtherTransform(unit);
+}
 
-    for (AuraEffect const* eff : unit->GetAuraEffectsByType(SPELL_AURA_MOD_SHAPESHIFT))
-        if (unit->GetModelForForm(ShapeshiftForm(eff->GetMiscValue()), eff->GetId()))
-            return false;
-
-    for (AuraEffect const* eff : unit->GetAuraEffectsByType(SPELL_AURA_TRANSFORM))
-        if (eff->GetId() != SPELL_TWO_FORMS)
-            return false;
-
-    return true;
+// getGender() reads UNIT_FIELD_BYTES_0, which SetDisplayId() sets to the
+// gender of the model, so a costume changes it. PLAYER_BYTES_3 holds the
+// character's.
+static uint8 NativeGender(Player* player)
+{
+    return player->GetByteValue(PLAYER_BYTES_3, 0);
 }
 
 static void ReadAppearance(Player* player, uint8* out)
@@ -139,9 +156,10 @@ static void WriteAppearance(Player* player, uint8 const* in)
 
 static bool ClampHuman(Player* player, uint8* a);
 
-// `human` = 1 while the player is in human form: an autosave then writes the
-// human set into `characters`, so w_ holds the wolf set. With 0, `characters`
-// holds the wolf set, including barbershop and character-screen changes.
+// `human` = 1 when the last save was in human form: `characters` then holds
+// the human set, and w_ the wolf set. With 0, `characters` holds the wolf set,
+// including barbershop and character-screen changes. Set in OnPlayerSave, so a
+// form change after the save can't clear it.
 static void SaveForms(Player* player)
 {
     WorgenFormData* d = Forms(player);
@@ -150,7 +168,7 @@ static void SaveForms(Player* player)
         "(guid,human,w_skin,w_face,w_hair,w_haircolor,w_facialhair,"
         "h_skin,h_face,h_hair,h_haircolor,h_facialhair) "
         "VALUES ({},{},{},{},{},{},{},{},{},{},{},{})",
-        player->GetGUID().GetCounter(), uint32(d->human),
+        player->GetGUID().GetCounter(), uint32(d->savedHuman),
         uint32(d->w[A_SKIN]), uint32(d->w[A_FACE]), uint32(d->w[A_HAIR]),
         uint32(d->w[A_HAIRCOLOR]), uint32(d->w[A_FACIALHAIR]),
         uint32(d->h[A_SKIN]), uint32(d->h[A_FACE]), uint32(d->h[A_HAIR]),
@@ -166,6 +184,7 @@ static void LoadForms(Player* player)
     for (uint8 i = 0; i < A_COUNT; ++i)
         d->h[i] = d->w[i];
     d->human = false;
+    d->savedHuman = false;
 
     QueryResult res = CharacterDatabase.Query(
         "SELECT human,w_skin,w_face,w_hair,w_haircolor,w_facialhair,"
@@ -181,13 +200,13 @@ static void LoadForms(Player* player)
             d->h[i] = f[i + 1 + A_COUNT].Get<uint8>();
 
         // The server went down while the player was in human form, so
-        // `characters` may hold the human set.
+        // `characters` holds the human set until the next save.
         if (f[0].Get<uint8>())
         {
             for (uint8 i = 0; i < A_COUNT; ++i)
                 d->w[i] = f[i + 1].Get<uint8>();
             WriteAppearance(player, d->w);
-            save = true;
+            d->savedHuman = true;
         }
     }
 
@@ -231,6 +250,11 @@ static void SetWorgenForm(Player* player, bool human)
     WorgenFormData* d = Forms(player);
     bool const wasHuman = d->human;
 
+    // Leaving a battleground on logout ends combat after OnPlayerBeforeLogout
+    // and before the save; the logout save must see the wolf.
+    if (human && player->GetSession()->PlayerLogout())
+        human = false;
+
     // Last chance to catch a haircut before the fields are overwritten: in
     // human form it belongs to the human set, in wolf form to the wolf set.
     if (wasHuman)
@@ -241,7 +265,7 @@ static void SetWorgenForm(Player* player, bool human)
     if (human)
     {
         player->SetByteValue(UNIT_FIELD_BYTES_0, 0, RACE_HUMAN);
-        player->SetDisplayId(player->getGender() == GENDER_MALE
+        player->SetDisplayId(NativeGender(player) == GENDER_MALE
                              ? DISPLAY_HUMAN_MALE : DISPLAY_HUMAN_FEMALE);
         if (d->loaded)
             WriteAppearance(player, d->h);
@@ -256,8 +280,6 @@ static void SetWorgenForm(Player* player, bool human)
     }
 
     d->human = human;
-    if (d->loaded && human != wasHuman)
-        SaveForms(player);
 }
 
 // When 0, the human form stays also in combat.
@@ -286,7 +308,7 @@ static bool HumanSectionExists(Player* player, CharSectionType section, uint8 ty
                                bool playerOnly = true)
 {
     for (CharSectionsEntry const* e : sCharSectionsStore)
-        if (e->RaceID == RACE_HUMAN && e->SexID == player->getGender() &&
+        if (e->RaceID == RACE_HUMAN && e->SexID == NativeGender(player) &&
             e->BaseSection == uint32(section) && e->VariationIndex == type && e->ColorIndex == color &&
             (!playerOnly || (e->Flags & SECTION_FLAG_PLAYER)))
             return true;
@@ -307,7 +329,7 @@ static bool HumanFaceExists(Player* player, uint8 face, uint8 skin)
 static bool HumanBarberStyleExists(Player* player, uint32 type, uint8 id)
 {
     for (BarberShopStyleEntry const* e : sBarberShopStyleStore)
-        if (e->type == type && e->race == RACE_HUMAN && e->gender == player->getGender() && e->hair_id == id)
+        if (e->type == type && e->race == RACE_HUMAN && e->gender == NativeGender(player) && e->hair_id == id)
             return true;
     return false;
 }
@@ -403,7 +425,23 @@ public:
         // handler must not take these bytes for a haircut in human form.
         WriteAppearance(player, d->w);
         d->human = false;
-        SaveForms(player);
+    }
+
+    void OnPlayerSave(Player* player) override
+    {
+        if (!IsWorgenPlayer(player))
+            return;
+
+        WorgenFormData* d = Forms(player);
+        if (!d->loaded)
+            return;
+
+        AdoptBarbershopChanges(player);
+        if (d->human != d->savedHuman)
+        {
+            d->savedHuman = d->human;
+            SaveForms(player);
+        }
     }
 
     void OnPlayerDeleteFromDB(CharacterDatabaseTransaction trans, uint32 guid) override
@@ -510,8 +548,19 @@ class spell_worgen_two_forms_aura : public AuraScript
         PreventDefaultAction();
 
         Player* target = GetTarget() ? GetTarget()->ToPlayer() : nullptr;
-        if (!target || !CanChangeForm(target))
+        if (!IsWorgenPlayer(target))
             return;
+
+        if (!CanChangeForm(target))
+        {
+            // Unit::RestoreDisplayId() only asks the newest transform. When
+            // that is Two Forms, pass the display on to the other one, or the
+            // model of whatever just ended stays.
+            if (!HasModelForm(target))
+                if (AuraEffect* other = OtherTransform(target))
+                    other->HandleEffect(target, AURA_EFFECT_HANDLE_SEND_FOR_CLIENT, true);
+            return;
+        }
 
         // The aura survives logout (Aura::CanBeSaved() says yes: not passive,
         // not channeled, self-cast, infinite duration), so the form is

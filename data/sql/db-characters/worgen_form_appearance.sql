@@ -10,9 +10,9 @@
 --     character-screen changes; the wolf set is written back in
 --     OnPlayerBeforeLogout, which runs BEFORE SaveToDB() in
 --     WorldSession::LogoutPlayer,
---   * this table holds the human set, and `human` = 1 while the player is in
---     human form. If the server goes down then, w_ is the wolf set to restore
---     on the next login,
+--   * this table holds the human set, and `human` = 1 when the last save was
+--     in human form. If the server goes down then, w_ is the wolf set to
+--     restore on the next login,
 --   * the five bytes are swapped on every form change.
 --
 -- A character without a row gets one on its next login, with the human form
@@ -20,7 +20,7 @@
 -- the worgen one has no human equivalent.
 CREATE TABLE IF NOT EXISTS `worgen_form_appearance` (
   `guid`          INT UNSIGNED     NOT NULL COMMENT 'characters.guid',
-  `human`         TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '1 = in human form, w_ is the wolf set',
+  `human`         TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '1 = saved in human form, w_ is the wolf set',
   `w_skin`        TINYINT UNSIGNED NOT NULL DEFAULT 0,
   `w_face`        TINYINT UNSIGNED NOT NULL DEFAULT 0,
   `w_hair`        TINYINT UNSIGNED NOT NULL DEFAULT 0,
