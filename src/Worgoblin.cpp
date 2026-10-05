@@ -281,8 +281,9 @@ static bool ReadBackFields(Player* player)
     return true;
 }
 
-// Only through UpdateForm(), which guards against re-entry. `asked`:
-// Unit::RestoreDisplayId() asked Two Forms, so no other aura owns the display.
+// Only through UpdateForm(), which guards against re-entry. `asked`: the core
+// handed the display to Two Forms (RestoreDisplayId(), or the resend after
+// login or a teleport); CanChangeForm() below rules out other owners.
 static void SetWorgenForm(Player* player, bool human, bool asked)
 {
     WorgenFormData* d = Forms(player);
