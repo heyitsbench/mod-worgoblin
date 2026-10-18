@@ -10,24 +10,24 @@ INSERT INTO `player_totem_model` (`TotemID`, `RaceID`, `ModelID`) VALUES
 (3, 9, 4587),
 (4, 9, 4590);
 
-DELETE FROM `playercreateinfo` WHERE `race` = 9 OR `race` = 12;
-INSERT INTO `playercreateinfo` (`race`, `class`, `map`, `zone`, `position_x`, `position_y`, `position_z`, `orientation`) VALUES
-(9, 1, 1,    14,   -618.518, -4251.67, 38.718,  0), -- Goblins spawn with Orcs/Trolls. Currently the DBC uses the tauren flyby camera, so I gotta fix that.
-(9, 3, 1,    14,   -618.518, -4251.67, 38.718,  0),
-(9, 4, 1,    14,   -618.518, -4251.67, 38.718,  0),
-(9, 5, 1,    14,   -618.518, -4251.67, 38.718,  0),
-(9, 6, 609,  4298, 2358.44,  -5666.9,  426.023, 3.65997),
-(9, 7, 1,    14,   -618.518, -4251.67, 38.718,  0),
-(9, 8, 1,    14,   -618.518, -4251.67, 38.718,  0),
-(9, 9, 1,    14,   -618.518, -4251.67, 38.718,  0),
-(12, 1, 1,   141,  10311.3,  832.463,  1326.41, 5.69632), -- Worgen spawn with Nelfs.
-(12, 3, 1,   141,  10311.3,  832.463,  1326.41, 5.69632),
-(12, 4, 1,   141,  10311.3,  832.463,  1326.41, 5.69632),
-(12, 5, 1,   141,  10311.3,  832.463,  1326.41, 5.69632),
-(12, 6, 609, 4298, 2358.44,  -5666.9,  426.023, 3.65997),
-(12, 8, 1,   141,  10311.3,  832.463,  1326.41, 5.69632),
-(12, 9, 1,   141,  10311.3,  832.463,  1326.41, 5.69632),
-(12, 11, 1,  141,  10311.3,  832.463,  1326.41, 5.69632);
+DELETE FROM `playercreateinfo` WHERE `raceMask` IN (256, 2048);
+INSERT INTO `playercreateinfo` (`raceMask`, `classMask`, `map`, `zone`, `position_x`, `position_y`, `position_z`, `orientation`) VALUES
+( 256,    1, 1,   14,   -618.518, -4251.67, 38.718,  0), -- Goblins spawn with Orcs/Trolls. Currently the DBC uses the tauren flyby camera, so I gotta fix that.
+( 256,    4, 1,   14,   -618.518, -4251.67, 38.718,  0),
+( 256,    8, 1,   14,   -618.518, -4251.67, 38.718,  0),
+( 256,   16, 1,   14,   -618.518, -4251.67, 38.718,  0),
+( 256,   32, 609, 4298, 2358.44,  -5666.9,  426.023, 3.65997),
+( 256,   64, 1,   14,   -618.518, -4251.67, 38.718,  0),
+( 256,  128, 1,   14,   -618.518, -4251.67, 38.718,  0),
+( 256,  256, 1,   14,   -618.518, -4251.67, 38.718,  0),
+(2048,    1, 1,   141,  10311.3,  832.463,  1326.41, 5.69632), -- Worgen spawn with Nelfs.
+(2048,    4, 1,   141,  10311.3,  832.463,  1326.41, 5.69632),
+(2048,    8, 1,   141,  10311.3,  832.463,  1326.41, 5.69632),
+(2048,   16, 1,   141,  10311.3,  832.463,  1326.41, 5.69632),
+(2048,   32, 609, 4298, 2358.44,  -5666.9,  426.023, 3.65997),
+(2048,  128, 1,   141,  10311.3,  832.463,  1326.41, 5.69632),
+(2048,  256, 1,   141,  10311.3,  832.463,  1326.41, 5.69632),
+(2048, 1024, 1,   141,  10311.3,  832.463,  1326.41, 5.69632);
 
 UPDATE item_template SET allowablerace = allowablerace|256 WHERE allowablerace & 2 AND allowablerace != -1 AND allowablerace != 2147483647 AND allowablerace != 2047 AND allowablerace != 4095 AND allowablerace != 8191 AND allowablerace != 16383 AND allowablerace != 32767 AND allowablerace != 65535 AND allowablerace != 131071 AND allowablerace != 262143 AND allowablerace != 524287 AND allowablerace != 1048575 AND allowablerace != 2097151;
 UPDATE item_template SET allowablerace = allowablerace|2048 WHERE allowablerace & 1 AND allowablerace != -1 AND allowablerace != 2147483647 AND allowablerace != 2047 AND allowablerace != 4095 AND allowablerace != 8191 AND allowablerace != 16383 AND allowablerace != 32767 AND allowablerace != 65535 AND allowablerace != 131071 AND allowablerace != 262143 AND allowablerace != 524287 AND allowablerace != 1048575 AND allowablerace != 2097151;
@@ -150,102 +150,102 @@ UPDATE quest_template SET AllowableRaces = AllowableRaces|2048 WHERE AllowableRa
 UPDATE quest_template SET AllowableRaces = 1 WHERE ID = 12742;
 UPDATE quest_template SET AllowableRaces = 2 WHERE ID = 12748;
 
-DELETE FROM `playercreateinfo_action` WHERE `race` = 9 OR `race` = 12;
-INSERT INTO `playercreateinfo_action` (`race`, `class`, `button`, `action`) VALUES
-(9, 1, 72, 6603),
-(9, 1, 73, 78),
-(9, 1, 81, 69070),
-(9, 1, 82, 69041),
-(9, 1, 84, 6603),
-(9, 1, 96, 6603),
-(9, 3, 0, 6603),
-(9, 3, 1, 2973),
-(9, 3, 2, 75),
-(9, 3, 9, 69070),
-(9, 3, 10, 69041),
-(9, 4, 0, 6603),
-(9, 4, 1, 1752),
-(9, 4, 2, 2098),
-(9, 4, 3, 2764),
-(9, 4, 9, 69070),
-(9, 4, 10, 69041),
-(9, 5, 0, 585),
-(9, 5, 1, 2050),
-(9, 5, 9, 69070),
-(9, 5, 10, 69041),
-(9, 6, 0, 6603),
-(9, 6, 1, 49576),
-(9, 6, 2, 45477),
-(9, 6, 3, 45462),
-(9, 6, 4, 45902),
-(9, 6, 5, 47541),
-(9, 6, 9, 69070),
-(9, 6, 11, 69046),
-(9, 6, 10, 69041),
-(9, 7, 0, 6603),
-(9, 7, 1, 403),
-(9, 7, 2, 331),
-(9, 7, 9, 69070),
-(9, 7, 10, 69041),
-(9, 8, 0, 133),
-(9, 8, 1, 168),
-(9, 8, 9, 69070),
-(9, 8, 10, 69041),
-(9, 9, 0, 686),
-(9, 9, 1, 687),
-(9, 9, 9, 69070),
-(9, 9, 10, 69041),
-(12, 1, 72, 6603),
-(12, 1, 73, 78),
-(12, 1, 84, 6603),
-(12, 1, 96, 6603),
--- (12, 1, 120, 68992), Darkflight Warrior
--- (12, 1, 120, 68996), Two Forms Warrior
--- (12, 1, 120, 87840), Running Wild Warrior
-(12, 3, 0, 6603),
-(12, 3, 1, 2973),
-(12, 3, 2, 75),
--- (12, 3, 120, 68992), Darkflight Hunter
--- (12, 3, 120, 68996), Two Forms Hunter
--- (12, 3, 120, 87840), Running Wild Hunter
-(12, 4, 0, 6603),
-(12, 4, 1, 1752),
-(12, 4, 2, 2098),
-(12, 4, 3, 2764),
--- (12, 4, 120, 68992), Darkflight Rogue
--- (12, 4, 120, 68996), Two Forms Rogue
--- (12, 4, 120, 87840), Running Wild Rogue
-(12, 5, 0, 585),
-(12, 5, 1, 2050),
--- (12, 5, 120, 68992), Darkflight Priest
--- (12, 5, 120, 68996), Two Forms Priest
--- (12, 5, 120, 87840), Running Wild Priest
-(12, 6, 0, 6603),
-(12, 6, 1, 49576),
-(12, 6, 2, 45477),
-(12, 6, 3, 45462),
-(12, 6, 4, 45902),
-(12, 6, 5, 47541),
-(12, 6, 9, 68992),
--- (12, 6, 120, 68996), Two Forms Death Knight
--- (12, 6, 120, 87840), Running Wild Death Knight
-(12, 8, 0, 133),
-(12, 8, 1, 168),
--- (12, 8, 120, 68992), Darkflight Mage
--- (12, 8, 120, 68996), Two Forms Mage
--- (12, 8, 120, 87840), Running Wild Mage
-(12, 9, 0, 686),
-(12, 9, 1, 687),
--- (12, 9, 120, 68992), Darkflight Warlock
--- (12, 9, 120, 68996), Two Forms Warlock
--- (12, 9, 120, 87840), Running Wild Warlock
-(12, 11, 0, 5176),
-(12, 11, 1, 5185),
-(12, 11, 72, 6603),
-(12, 11, 96, 6603);
--- (12, 11, 120, 68992), Darkflight Druid
--- (12, 11, 120, 68996), Two Forms Druid
--- (12, 11, 120, 87840) Running Wild Druid
+DELETE FROM `playercreateinfo_action` WHERE `raceMask` IN (256, 2048);
+INSERT INTO `playercreateinfo_action` (`raceMask`, `classMask`, `button`, `action`) VALUES
+( 256,    1, 72, 6603),
+( 256,    1, 73, 78),
+( 256,    1, 81, 69070),
+( 256,    1, 82, 69041),
+( 256,    1, 84, 6603),
+( 256,    1, 96, 6603),
+( 256,    4, 0, 6603),
+( 256,    4, 1, 2973),
+( 256,    4, 2, 75),
+( 256,    4, 9, 69070),
+( 256,    4, 10, 69041),
+( 256,    8, 0, 6603),
+( 256,    8, 1, 1752),
+( 256,    8, 2, 2098),
+( 256,    8, 3, 2764),
+( 256,    8, 9, 69070),
+( 256,    8, 10, 69041),
+( 256,   16, 0, 585),
+( 256,   16, 1, 2050),
+( 256,   16, 9, 69070),
+( 256,   16, 10, 69041),
+( 256,   32, 0, 6603),
+( 256,   32, 1, 49576),
+( 256,   32, 2, 45477),
+( 256,   32, 3, 45462),
+( 256,   32, 4, 45902),
+( 256,   32, 5, 47541),
+( 256,   32, 9, 69070),
+( 256,   32, 11, 69046),
+( 256,   32, 10, 69041),
+( 256,   64, 0, 6603),
+( 256,   64, 1, 403),
+( 256,   64, 2, 331),
+( 256,   64, 9, 69070),
+( 256,   64, 10, 69041),
+( 256,  128, 0, 133),
+( 256,  128, 1, 168),
+( 256,  128, 9, 69070),
+( 256,  128, 10, 69041),
+( 256,  256, 0, 686),
+( 256,  256, 1, 687),
+( 256,  256, 9, 69070),
+( 256,  256, 10, 69041),
+(2048,    1, 72, 6603),
+(2048,    1, 73, 78),
+(2048,    1, 84, 6603),
+(2048,    1, 96, 6603),
+-- (2048,    1, 120, 68992), Darkflight Warrior
+-- (2048,    1, 120, 68996), Two Forms Warrior
+-- (2048,    1, 120, 87840), Running Wild Warrior
+(2048,    4, 0, 6603),
+(2048,    4, 1, 2973),
+(2048,    4, 2, 75),
+-- (2048,    4, 120, 68992), Darkflight Hunter
+-- (2048,    4, 120, 68996), Two Forms Hunter
+-- (2048,    4, 120, 87840), Running Wild Hunter
+(2048,    8, 0, 6603),
+(2048,    8, 1, 1752),
+(2048,    8, 2, 2098),
+(2048,    8, 3, 2764),
+-- (2048,    8, 120, 68992), Darkflight Rogue
+-- (2048,    8, 120, 68996), Two Forms Rogue
+-- (2048,    8, 120, 87840), Running Wild Rogue
+(2048,   16, 0, 585),
+(2048,   16, 1, 2050),
+-- (2048,   16, 120, 68992), Darkflight Priest
+-- (2048,   16, 120, 68996), Two Forms Priest
+-- (2048,   16, 120, 87840), Running Wild Priest
+(2048,   32, 0, 6603),
+(2048,   32, 1, 49576),
+(2048,   32, 2, 45477),
+(2048,   32, 3, 45462),
+(2048,   32, 4, 45902),
+(2048,   32, 5, 47541),
+(2048,   32, 9, 68992),
+-- (2048,   32, 120, 68996), Two Forms Death Knight
+-- (2048,   32, 120, 87840), Running Wild Death Knight
+(2048,  128, 0, 133),
+(2048,  128, 1, 168),
+-- (2048,  128, 120, 68992), Darkflight Mage
+-- (2048,  128, 120, 68996), Two Forms Mage
+-- (2048,  128, 120, 87840), Running Wild Mage
+(2048,  256, 0, 686),
+(2048,  256, 1, 687),
+-- (2048,  256, 120, 68992), Darkflight Warlock
+-- (2048,  256, 120, 68996), Two Forms Warlock
+-- (2048,  256, 120, 87840), Running Wild Warlock
+(2048, 1024, 0, 5176),
+(2048, 1024, 1, 5185),
+(2048, 1024, 72, 6603),
+(2048, 1024, 96, 6603);
+-- (2048, 1024, 120, 68992), Darkflight Druid
+-- (2048, 1024, 120, 68996), Two Forms Druid
+-- (2048, 1024, 120, 87840) Running Wild Druid
 
 UPDATE `playercreateinfo_skills` SET `racemask` = `racemask`|256|2048 WHERE `skill` = 46; -- Guns
 UPDATE `playercreateinfo_skills` SET `racemask` = `racemask`|256|2048 WHERE `skill` = 173; -- Daggers
