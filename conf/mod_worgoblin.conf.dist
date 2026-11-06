@@ -4,3 +4,13 @@
 # Default: true
 
 Announce.enable=true
+
+# Worgen with Two Forms take wolf form when they enter combat and return to
+# human form when combat ends. 0 = the human form stays also in combat.
+# Default: 1
+
+Worgoblin.TwoForms.CombatShift = 1
+
+# Two Forms keeps the worgen appearance through a crash only with
+# CharacterDatabase.WorkerThreads = 1 (worldserver.conf, the default): its
+# table write must land before the character save it belongs to.
